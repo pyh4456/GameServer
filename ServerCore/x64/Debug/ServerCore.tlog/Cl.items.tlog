@@ -1,5 +1,6 @@
 C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\CoreGlobal.cpp;C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\x64\Debug\CoreGlobal.obj
 C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\CorePch.cpp;C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\x64\Debug\CorePch.obj
 C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\CoreTLS.cpp;C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\x64\Debug\CoreTLS.obj
+C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\Lock.cpp;C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\x64\Debug\Lock.obj
 C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\pch.cpp;C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\x64\Debug\pch.obj
 C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\ThreadManager.cpp;C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\x64\Debug\ThreadManager.obj
