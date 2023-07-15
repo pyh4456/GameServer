@@ -1,1 +1,4 @@
-﻿  DummyClient.vcxproj -> C:\Users\ParkYoonHyeong\Desktop\server_project\GameServer\Binary\Debug\DummyClient.exe
+﻿  DummyClient.cpp
+  pch.cpp
+  코드를 생성하고 있습니다...
+  DummyClient.vcxproj -> C:\Users\ParkYoonHyeong\Desktop\GameServer\Binary\Debug\DummyClient.exe
