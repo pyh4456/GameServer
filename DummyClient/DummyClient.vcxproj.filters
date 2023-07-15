@@ -2,19 +2,23 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Main">
-      <UniqueIdentifier>{32a115a3-002a-4cee-94ec-398d921066e7}</UniqueIdentifier>
+      <UniqueIdentifier>{7ce01a19-38b3-498c-9275-d574830917cc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils">
-      <UniqueIdentifier>{4b3077db-7e87-40c4-b1ea-186b30014761}</UniqueIdentifier>
+      <UniqueIdentifier>{a5cbd172-9aef-4030-945e-7110f2ea7d51}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DummyClient.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="pch.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
+    <ClInclude Include="pch.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

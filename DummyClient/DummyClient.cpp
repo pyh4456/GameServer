@@ -1,8 +1,7 @@
-﻿#include"pch.h"
+﻿#include "pch.h"
 #include <iostream>
 
 int main()
 {
-    HelloWorld();
-    cout << "Dummy" << endl;
+	HelloWorld();
 }

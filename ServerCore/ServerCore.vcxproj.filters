@@ -2,16 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Network">
-      <UniqueIdentifier>{f133f564-d052-4720-b489-8831922c67ce}</UniqueIdentifier>
+      <UniqueIdentifier>{44015ff7-f5fe-4ecb-9510-ba792e92d6c2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils">
-      <UniqueIdentifier>{5316cf24-1bfc-47cf-97a9-70ddc83c9d1e}</UniqueIdentifier>
+      <UniqueIdentifier>{1c94faf8-d38f-44b3-b3f3-39ba3c6951e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Main">
-      <UniqueIdentifier>{59ae6d40-ee3c-4197-9d0a-9b07d7058954}</UniqueIdentifier>
+      <UniqueIdentifier>{c0b75513-7471-4500-a833-2626c5040f9c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Thread">
-      <UniqueIdentifier>{3d818347-a3f2-4779-a1ac-58953f0839ff}</UniqueIdentifier>
+      <UniqueIdentifier>{0a8a1a96-3bcc-4f5b-ac25-3388457fad31}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,19 +24,22 @@
     <ClInclude Include="Types.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="CoreMacro.h">
+      <Filter>Main</Filter>
+    </ClInclude>
     <ClInclude Include="CoreGlobal.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="CoreTLS.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="CoreMacro.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="ThreadManager.h">
       <Filter>Thread</Filter>
     </ClInclude>
     <ClInclude Include="Lock.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadLockProfiler.h">
       <Filter>Thread</Filter>
     </ClInclude>
   </ItemGroup>
@@ -57,6 +60,9 @@
       <Filter>Thread</Filter>
     </ClCompile>
     <ClCompile Include="Lock.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadLockProfiler.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
   </ItemGroup>

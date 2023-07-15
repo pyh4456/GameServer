@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{e7cd0ed4-1b80-4e89-8235-a875e3f21d9f}</ProjectGuid>
+    <ProjectGuid>{f03fe732-3473-4bbd-94b1-d4916c3b4a15}</ProjectGuid>
     <RootNamespace>GameServer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -71,21 +71,25 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)ServerCore\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)ServerCore\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)ServerCore\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)ServerCore\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
@@ -155,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AccountManager.cpp" />
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -162,9 +167,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="PlayerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AccountManager.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PlayerManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
