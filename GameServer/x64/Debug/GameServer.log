@@ -1,6 +1,2 @@
-﻿  pch.cpp
-  AccountManager.cpp
-  GameServer.cpp
-  PlayerManager.cpp
-  코드를 생성하고 있습니다...
+﻿  GameServer.cpp
   GameServer.vcxproj -> C:\Users\ParkYoonHyeong\Desktop\GameServer\Binary\Debug\GameServer.exe

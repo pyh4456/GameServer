@@ -6,31 +6,36 @@
 #include <windows.h>
 #include <future>
 #include "ThreadManager.h"
+#include "RefCounting.h"
+#include "Memory.h"
+#include "Allocator.h"
 
-#include "PlayerManager.h"
-#include "AccountManager.h"
+class Player {
+public:
+	Player() {}
+	virtual ~Player() {	}
+};
 
-int main()
-{
-	GThreadManager->Launch([=]
-		{
-			while (true)
-			{
-				cout << "PlayerThenAccount" << endl;
-				GPlayerManager.PlayerThenAccount();
-				this_thread::sleep_for(100ms);
-			}
-		});
+class Knight : public Player {
+public:
+	Knight() {
+		cout << "Knight()" << endl;
+	}
+	~Knight() {
+		cout << "~Knight()" << endl;
+	}
 
-	GThreadManager->Launch([=]
-		{
-			while (true)
-			{
-				cout << "AccountThenPlayer" << endl;
-				GAccountManager.AccountThenPlayer();
-				this_thread::sleep_for(100ms);
-			}
-		});
+	int32 _hp = 100;
+	int32 _mp = 10;
 
-	GThreadManager->Join();
+};
+
+
+
+int main() {
+
+	Vector<Knight> v(100);
+
+	Map<int32, Knight> m;
+	m[100] = Knight();
 }
