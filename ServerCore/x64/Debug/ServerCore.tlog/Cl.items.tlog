@@ -5,6 +5,7 @@ C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\CoreTLS.cpp;C:\Users\ParkY
 C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\DeadLockProfiler.cpp;C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\x64\Debug\DeadLockProfiler.obj
 C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\Lock.cpp;C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\x64\Debug\Lock.obj
 C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\Memory.cpp;C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\x64\Debug\Memory.obj
+C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\MemoryPool.cpp;C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\x64\Debug\MemoryPool.obj
 C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\pch.cpp;C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\x64\Debug\pch.obj
 C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\RefCounting.cpp;C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\x64\Debug\RefCounting.obj
 C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\ThreadManager.cpp;C:\Users\ParkYoonHyeong\Desktop\GameServer\ServerCore\x64\Debug\ThreadManager.obj
