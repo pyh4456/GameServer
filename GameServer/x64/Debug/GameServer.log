@@ -1,1 +1,5 @@
-﻿  GameServer.vcxproj -> C:\Users\ParkYoonHyeong\Desktop\GameServer\Binary\Debug\GameServer.exe
+﻿  GameServer.cpp
+C:\Users\ParkYoonHyeong\Desktop\GameServer\GameServer\GameServer.cpp(50,10): warning C4552: '>>': 식의 결과가 사용되지 않습니다.
+  LockFreeStack.cpp
+  코드를 생성하고 있습니다...
+  GameServer.vcxproj -> C:\Users\ParkYoonHyeong\Desktop\GameServer\Binary\Debug\GameServer.exe
