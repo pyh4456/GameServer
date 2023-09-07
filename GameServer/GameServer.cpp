@@ -9,6 +9,7 @@
 #include "RefCounting.h"
 #include "Memory.h"
 #include "Allocator.h"
+#include "LockFreeStack.h"
 
 class Player {
 public:

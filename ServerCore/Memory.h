@@ -23,6 +23,8 @@ public:
 private:
 	vector<MemoryPool*> _pools;
 
+	// 메모리 크기 <-> 메모리 풀
+	// 0(1) 빠르게 찾기 위한 테이블
 	MemoryPool* _poolTable[MAX_ALLOC_SIZE + 1];
 };
 

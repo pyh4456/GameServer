@@ -57,9 +57,11 @@ void* Memory::Allocate(int32 size)
 	const int32 allocSize = size + sizeof(MemoryHeader);
 
 	if (allocSize > MAX_ALLOC_SIZE) {
+		// 메모리 풀링 최대 크기를 벗어나면 일반 할당
 		header = reinterpret_cast<MemoryHeader*>(::malloc(allocSize));
 	}
 	else {
+		// 메모리 풀에서 꺼내온다
 		header = _poolTable[allocSize]->Pop();
 	}
 
@@ -74,9 +76,11 @@ void Memory::Release(void* ptr)
 	ASSERT_CRASH(allocSize > 0);
 
 	if (allocSize > MAX_ALLOC_SIZE) {
+		//메모리 풀링 최대 크기를 벗어나면 일반 해제
 		::free(header);
 	}
 	else {
+		//메모리 풀에 반납한다
 		_poolTable[allocSize]->Push(header);
 	}
 }
