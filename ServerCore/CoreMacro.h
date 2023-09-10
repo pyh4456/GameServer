@@ -16,7 +16,7 @@
 /*----------------
 	  Memory
 -----------------*/
-
+/*
 #ifdef _DEBUG
 #define xxalloc(size)		PoolAllocator::Alloc(size)
 #define xxrelease(ptr)		PoolAllocator::Release(ptr)
@@ -24,7 +24,7 @@
 #define xxalloc(size)		BaseAllocator::Alloc(size)
 #define xxrelease(ptr)		BaseAllocator::Release(ptr)
 #endif
-
+*/
 
 /*---------------
 	  Crash
