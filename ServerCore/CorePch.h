@@ -14,3 +14,5 @@ using namespace std;
 #include "Memory.h"
 
 #include "ObjectPool.h"
+
+#include "TypeCast.h"
