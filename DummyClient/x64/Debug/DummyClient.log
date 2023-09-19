@@ -1,4 +1,1 @@
-﻿  DummyClient.cpp
-C:\Users\ParkYoonHyeong\Desktop\GameServer\DummyClient\DummyClient.cpp(6,2): error C3861: 'HelloWorld': 식별자를 찾을 수 없습니다.
-  pch.cpp
-  코드를 생성하고 있습니다...
+﻿  DummyClient.vcxproj -> C:\Users\ParkYoonHyeong\Desktop\GameServer\Binary\Debug\DummyClient.exe
