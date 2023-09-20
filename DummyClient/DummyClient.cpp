@@ -42,7 +42,35 @@ int main()
 	cout << "Connected to server!" << endl;
 
 	while (true) {
+		// TODO
+		char sendBuffer[100] = "Hello World!";
+
+		for (int32 i = 0; i < 10; i++) {
+			int32 resultCode = ::send(clientSocket, sendBuffer, sizeof(sendBuffer), 0);
+			if (resultCode == SOCKET_ERROR) {
+				int32 errCode = ::WSAGetLastError();
+				cout << "Send ErrorCode : " << errCode << endl;
+				return 0;
+			}
+		}
+
+	
+		cout << "Send Data Lend = " << sizeof(sendBuffer) << endl;
+
+		/*char recvBuffer[1000];
+
+		int32 recvLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
+		if (recvLen <= 0) {
+			int32 errCode = ::WSAGetLastError();
+			cout << "Recv ErrorCode : " << errCode << endl;
+			return 0;
+		}
+
+		cout << "received data Len : " << recvLen << endl;
+		cout << "received data : " << recvBuffer << endl;*/
+
 		this_thread::sleep_for(1s);
+
 	}
 
 	//소켓 리소스 반환
