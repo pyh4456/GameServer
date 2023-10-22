@@ -12,16 +12,20 @@
 #include <ws2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
 
+void HandleError(const char* cause) {
+	int32 errCode = ::WSAGetLastError();
+	cout << cause << " ErrorCode : " << errCode << endl;
+}
+
 int main() {
 	// WinSock 라이브러리 초기화
 	WSAData wsaData;
 	if (::WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		return 0;
 
-	SOCKET listenSocket = ::socket(AF_INET, SOCK_STREAM, 0);
-	if (listenSocket == INVALID_SOCKET) {
-		int32 errCode = ::WSAGetLastError();
-		cout << "Socket ErrorCode : " << errCode << endl;
+	SOCKET serverSocket = ::socket(AF_INET, SOCK_DGRAM, 0);
+	if (serverSocket == INVALID_SOCKET) {
+		HandleError("Socket");
 		return 0;
 	}
 
@@ -29,70 +33,43 @@ int main() {
 	SOCKADDR_IN serverAddr;// IPv4
 	::memset(&serverAddr, 0, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
-	serverAddr.sin_addr.s_addr = ::htonl(INADDR_ANY);//알아서 연결해달라는 의미
+	serverAddr.sin_addr.s_addr = ::htonl(INADDR_ANY);
 	serverAddr.sin_port = ::htons(7777);
 
-	//listener 소켓 준비
-	if (::bind(listenSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr))){
-		int32 errCode = ::WSAGetLastError();
-		cout << "Bind ErrorCode : " << errCode << endl;
+	if (::bind(serverSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr))) {
+		HandleError("Bind");
 		return 0;
 	}
 
-	//listen
-	if (::listen(listenSocket, 10)) { //대기열의 한도 설정 (현재 10)
-		int32 errCode = ::WSAGetLastError();
-		cout << "Listen ErrorCode : " << errCode << endl;
-		return 0;
-	}
-
-	//연결 처리
-	// ----------------------------
 	while (true) {
+		//TODO
 		SOCKADDR_IN clientAddr;
 		::memset(&clientAddr, 0, sizeof(clientAddr));
 		int32 addrLen = sizeof(clientAddr);
 
-		SOCKET clientSocket = ::accept(listenSocket, (SOCKADDR*)&clientAddr, &addrLen);
-		if (clientSocket == INVALID_SOCKET) {
-			int32 errCode = ::WSAGetLastError();
-			cout << "Accept ErrorCode : " << errCode << endl;
+		char recvBuffer[1000];
+
+		int32 recvLen = ::recvfrom(serverSocket, recvBuffer, sizeof(recvBuffer), 0,
+			(SOCKADDR*)&clientAddr, &addrLen);
+
+		if (recvLen <= 0) {
+			HandleError("RecvFrom");
+			return 0;
+		}
+		
+		cout << "received data Len : " << recvLen << endl;
+		cout << "received data : " << recvBuffer << endl;
+
+		int32 errorCode = ::sendto(serverSocket, recvBuffer, recvLen, 0,
+			(SOCKADDR*)&clientAddr, sizeof(clientAddr));
+
+		if (errorCode== SOCKET_ERROR) {
+			HandleError("SendTo");
 			return 0;
 		}
 
-		// accept
-		char ipAddress[16];
-		::inet_ntop(AF_INET, &clientAddr.sin_addr, ipAddress, sizeof(ipAddress));
-		cout << "Client Connected! IP = " << ipAddress << endl;
-		//TODO
-		while (true) {
-			char recvBuffer[1000];
-
-			this_thread::sleep_for(1s);
-
-			int32 recvLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
-			if (recvLen <= 0) {
-				int32 errCode = ::WSAGetLastError();
-				cout << "Recv ErrorCode : " << errCode << endl;
-				return 0;
-			}
-
-			cout << "received data Len : " << recvLen << endl;
-			cout << "received data : " << recvBuffer << endl;
-
-
-			/*int32 resultCode = ::send(clientSocket, recvBuffer, recvLen, 0);
-			if (resultCode == SOCKET_ERROR) {
-				int32 errCode = ::WSAGetLastError();
-				cout << "Send ErrorCode : " << errCode << endl;
-				return 0;
-			}
-			cout << "Send Data Len = " << recvLen << endl;*/
-		}
-
+		cout << "Send Data Lend = " << recvLen << endl;
 	}
-	// ----------------------------
-
 
 	//WindSock 종료
 	::WSACleanup();

@@ -6,6 +6,11 @@
 #include <ws2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
 
+void HandleError(const char* cause) {
+	int32 errCode = ::WSAGetLastError();
+	cout << cause << " ErrorCode : " << errCode << endl;
+}
+
 int main()
 {	
 	
@@ -14,10 +19,9 @@ int main()
 	if (::WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		return 0;
 
-	SOCKET clientSocket = ::socket(AF_INET, SOCK_STREAM, 0);
+	SOCKET clientSocket = ::socket(AF_INET, SOCK_DGRAM, 0);
 	if (clientSocket == INVALID_SOCKET) {
-		int32 errCode = ::WSAGetLastError();
-		cout << "Socket ErrorCode : " << errCode << endl;
+		HandleError("Socket");
 		return 0;
 	}
 
@@ -27,13 +31,6 @@ int main()
 	serverAddr.sin_family = AF_INET;
 	::inet_pton(AF_INET, "127.0.0.1", &serverAddr.sin_addr);
 	serverAddr.sin_port = ::htons(7777);
-	
-	//연결 시도
-	if (::connect(clientSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr))) {
-		int32 errCode = ::WSAGetLastError();
-		cout << "Socket ErrorCode : " << errCode << endl;
-		return 0;
-	}
 
 	//----------------------------
 	// 연결 성공
@@ -45,29 +42,35 @@ int main()
 		// TODO
 		char sendBuffer[100] = "Hello World!";
 
-		for (int32 i = 0; i < 10; i++) {
-			int32 resultCode = ::send(clientSocket, sendBuffer, sizeof(sendBuffer), 0);
-			if (resultCode == SOCKET_ERROR) {
-				int32 errCode = ::WSAGetLastError();
-				cout << "Send ErrorCode : " << errCode << endl;
-				return 0;
-			}
+		int32 errorCode = ::sendto(clientSocket, sendBuffer, sizeof(sendBuffer), 0,
+			(SOCKADDR*)&serverAddr, sizeof(serverAddr));
+
+		if (errorCode == SOCKET_ERROR) {
+			HandleError("SendTo");
+			return 0;
 		}
 
-	
 		cout << "Send Data Lend = " << sizeof(sendBuffer) << endl;
+		cout << "Send Data = " << sendBuffer << endl;
 
-		/*char recvBuffer[1000];
 
-		int32 recvLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
+
+		SOCKADDR_IN recvAddr;
+		::memset(&recvAddr, 0, sizeof(recvAddr));
+		int32 addrLen = sizeof(recvAddr);
+
+		char recvBuffer[1000];
+
+		int32 recvLen = ::recvfrom(clientSocket, recvBuffer, sizeof(recvBuffer), 0,
+			(SOCKADDR*)&recvAddr, &addrLen);
+
 		if (recvLen <= 0) {
-			int32 errCode = ::WSAGetLastError();
-			cout << "Recv ErrorCode : " << errCode << endl;
+			HandleError("RecvFrom");
 			return 0;
 		}
 
 		cout << "received data Len : " << recvLen << endl;
-		cout << "received data : " << recvBuffer << endl;*/
+		cout << "received data : " << recvBuffer << endl;
 
 		this_thread::sleep_for(1s);
 
