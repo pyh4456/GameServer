@@ -23,53 +23,84 @@ int main() {
 	if (::WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		return 0;
 
-	SOCKET serverSocket = ::socket(AF_INET, SOCK_DGRAM, 0);
-	if (serverSocket == INVALID_SOCKET) {
-		HandleError("Socket");
+	// Non-Blocking
+	SOCKET listenSocket = ::socket(AF_INET, SOCK_STREAM, 0);
+	if (listenSocket == INVALID_SOCKET)
 		return 0;
-	}
 
-	//목적지 설정
-	SOCKADDR_IN serverAddr;// IPv4
+	u_long on = 1;
+	if (::ioctlsocket(listenSocket, FIONBIO, &on) == INVALID_SOCKET)
+		return 0;
+
+	SOCKADDR_IN serverAddr;
 	::memset(&serverAddr, 0, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_addr.s_addr = ::htonl(INADDR_ANY);
 	serverAddr.sin_port = ::htons(7777);
 
-	if (::bind(serverSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr))) {
-		HandleError("Bind");
+	if (::bind(listenSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
 		return 0;
-	}
 
+	if (::listen(listenSocket, SOMAXCONN) == SOCKET_ERROR)
+		return 0;
+
+	cout << "Accept" << endl;
+
+	SOCKADDR_IN clientAddr;
+	int32 addrLen = sizeof(clientAddr);
+
+	// Accpet
 	while (true) {
-		//TODO
-		SOCKADDR_IN clientAddr;
-		::memset(&clientAddr, 0, sizeof(clientAddr));
-		int32 addrLen = sizeof(clientAddr);
 
-		char recvBuffer[1000];
+		SOCKET clientSocket = ::accept(listenSocket, (SOCKADDR*)&clientAddr, &addrLen);
+		if (clientSocket == INVALID_SOCKET) {
 
-		int32 recvLen = ::recvfrom(serverSocket, recvBuffer, sizeof(recvBuffer), 0,
-			(SOCKADDR*)&clientAddr, &addrLen);
+			//문제상황이 아니면 다음 시도
+			if (::WSAGetLastError() == WSAEWOULDBLOCK)
+				continue;
 
-		if (recvLen <= 0) {
-			HandleError("RecvFrom");
-			return 0;
-		}
-		
-		cout << "received data Len : " << recvLen << endl;
-		cout << "received data : " << recvBuffer << endl;
-
-		int32 errorCode = ::sendto(serverSocket, recvBuffer, recvLen, 0,
-			(SOCKADDR*)&clientAddr, sizeof(clientAddr));
-
-		if (errorCode== SOCKET_ERROR) {
-			HandleError("SendTo");
-			return 0;
+			//Error
+			break;
 		}
 
-		cout << "Send Data Lend = " << recvLen << endl;
+		cout << "Client Connected!" << endl;
+
+		// Recv
+		while (true) {
+			char recvBuffer[1000];
+			int32 recvLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
+			if (recvLen == SOCKET_ERROR) {
+				//문제상황이 아니면 다음 시도
+				if (::WSAGetLastError() == WSAEWOULDBLOCK)
+					continue;
+
+				//Error
+				break;
+			}
+			else if (recvLen == 0) {
+				//연결 끊김
+				break;
+			}
+
+			cout << "Recv Data Len = " << recvLen << endl;
+
+			//Send
+			while (true) {
+				if (::send(clientSocket, recvBuffer, recvLen, 0) == SOCKET_ERROR) {
+					//문제상황이 아니면 다음 시도
+					if (::WSAGetLastError() == WSAEWOULDBLOCK)
+						continue;
+
+					//Error
+					break;
+				}
+
+				cout << "Send Data Len = " << recvLen << endl;
+				break;
+			}
+		}
 	}
+	
 
 	//WindSock 종료
 	::WSACleanup();
