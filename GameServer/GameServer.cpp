@@ -23,7 +23,7 @@ struct Session {
 	SOCKET socket;
 	char recvBuffer[BUFSIZE] = {};
 	int32 recvBytes = 0;
-	int32 sendBytes = 0;
+	WSAOVERLAPPED overlapped = {};
 };
 
 int main() {
@@ -55,98 +55,52 @@ int main() {
 
 	cout << "Accept" << endl;
 
-	//WSAEventSelct = (WSAEventSelect 함수가 핵심이 되는 모델)
-
-
-	vector<WSAEVENT> wsaEvents;
-	vector<Session> sessions;
-	sessions.reserve(100);
-
-	WSAEVENT listenEvent = ::WSACreateEvent();
-	wsaEvents.push_back(listenEvent);
-	sessions.push_back(Session{ listenSocket });
-	if (::WSAEventSelect(listenSocket, listenEvent, FD_ACCEPT | FD_CLOSE) == SOCKET_ERROR)
-		return 0;
+	// Overlapped IO (비동기 + 논 블로킹)
 
 	while (true) {
-		int32 index = ::WSAWaitForMultipleEvents(wsaEvents.size(), &wsaEvents[0], FALSE, WSA_INFINITE, FALSE);
-		if (index == WSA_WAIT_FAILED)
-			continue;
+		SOCKET clientSocket;
+		SOCKADDR_IN clientAddr;
+		int32 addrLen = sizeof(clientAddr);
 
-		index -= WSA_WAIT_EVENT_0;
-
-		WSANETWORKEVENTS networkEvents;
-		if (::WSAEnumNetworkEvents(sessions[index].socket, wsaEvents[index], &networkEvents) == SOCKET_ERROR)
-			continue;
-
-		// Listener 소켓 체크
-		if (networkEvents.lNetworkEvents & FD_ACCEPT) {
-			//Error 체크
-			if (networkEvents.iErrorCode[FD_ACCEPT_BIT] != 0)
+		while (true) {
+			clientSocket = ::accept(listenSocket, (SOCKADDR*)&clientAddr, &addrLen);
+			if (clientSocket != INVALID_SOCKET)
+				break;
+		
+			if (::WSAGetLastError() == WSAEWOULDBLOCK)
 				continue;
 
-			SOCKADDR_IN clientAddr;
-			int32 addrLen = sizeof(clientAddr);
-
-			SOCKET clientSocket = ::accept(listenSocket, (SOCKADDR*)&clientAddr, &addrLen);
-			if (clientSocket != INVALID_SOCKET) {
-				cout << "Client Connected" << endl;
-
-				WSAEVENT clientEvent = ::WSACreateEvent();
-				wsaEvents.push_back(clientEvent);
-				sessions.push_back(Session{ clientSocket });
-				if (::WSAEventSelect(clientSocket, clientEvent, FD_READ | FD_WRITE | FD_CLOSE) == SOCKET_ERROR)
-					return 0;
-			}
+			return 0;
 		}
 
-		//Client Session 소켓 체크
-		if (networkEvents.lNetworkEvents & FD_READ || networkEvents.lNetworkEvents & FD_WRITE) {
-			//Error 체크
-			if ((networkEvents.lNetworkEvents & FD_READ ) && (networkEvents.iErrorCode[FD_READ_BIT] != 0))
-				continue;
-			//Error 체크
-			if ((networkEvents.lNetworkEvents & FD_WRITE) && (networkEvents.iErrorCode[FD_WRITE_BIT] != 0))
-				continue;
+		Session session = Session{ clientSocket };
+		WSAEVENT wsaEvent = ::WSACreateEvent();
+		session.overlapped.hEvent = wsaEvent;
 
-			Session& s = sessions[index];
+		cout << "Client connected!" << endl;
 
-			//Read
-			if (s.recvBytes == 0) {
-				int32 recvLen = ::recv(s.socket, s.recvBuffer, BUFSIZE, 0);
-				if (recvLen == SOCKET_ERROR && ::WSAGetLastError() != WSAEWOULDBLOCK) {
-					// TODO : remove Session
-					continue;
+		while (true) {
+			WSABUF wsaBuf;
+			wsaBuf.buf = session.recvBuffer;
+			wsaBuf.len = BUFSIZE;
+
+			DWORD recvLen = 0;
+			DWORD flags = 0;
+
+			if (::WSARecv(clientSocket, &wsaBuf, 1, &recvLen, &flags, &session.overlapped, nullptr) == SOCKET_ERROR) {
+				if (::WSAGetLastError() == WSA_IO_PENDING) {
+					::WSAWaitForMultipleEvents(1, &wsaEvent, TRUE, WSA_INFINITE, FALSE);
+					::WSAGetOverlappedResult(session.socket, &session.overlapped, &recvLen, FALSE, &flags);
 				}
-
-				s.recvBytes = recvLen;
-				cout << "Recv Data = " << recvLen << endl;
+				else {
+					break;
+				}
 			}
-
-			//Write
-			if (s.recvBytes > s.sendBytes) {
-				int32 sendLen = ::send(s.socket, &s.recvBuffer[s.sendBytes], s.recvBytes - s.sendBytes, 0);
-				if (sendLen == SOCKET_ERROR && ::WSAGetLastError() != WSAEWOULDBLOCK) {
-					// TODO : remove Session
-					continue;
-				}
-
-				s.sendBytes += sendLen;
-				if (s.recvBytes == s.sendBytes) {
-					s.recvBytes = 0;
-					s.sendBytes = 0;
-				}
-
-				cout << "Send Data = " << sendLen << endl;
-			}
+			cout << "Data Recv Len = " << recvLen << endl;
 		}
-
-		//FD_SLOCE 처리
-		if (networkEvents.lNetworkEvents & FD_CLOSE) {
-			// TODO : remove Socket
-		}
+		::closesocket(session.socket);
+		::WSACloseEvent(wsaEvent);
 	}
-
 
 	//WindSock 종료
 	::WSACleanup();
