@@ -20,11 +20,20 @@ void HandleError(const char* cause) {
 const int32 BUFSIZE = 1000;
 
 struct Session {
+	WSAOVERLAPPED overlapped = {};
 	SOCKET socket;
 	char recvBuffer[BUFSIZE] = {};
 	int32 recvBytes = 0;
-	WSAOVERLAPPED overlapped = {};
+	
 };
+
+void CALLBACK RecvCallback(DWORD Error, DWORD recvLen, LPWSAOVERLAPPED overlapped, DWORD flags) {
+	cout << "Data Recv Len Callback = " << recvLen << endl;
+	// TODO : 에코 서버를 만든다면 WSASend();
+
+	Session* session = (Session*)overlapped;
+
+}
 
 int main() {
 	// WinSock 라이브러리 초기화
@@ -55,7 +64,7 @@ int main() {
 
 	cout << "Accept" << endl;
 
-	// Overlapped IO (비동기 + 논 블로킹)
+	// Overlapped IO (Complete Routine 콜백 기반)
 
 	while (true) {
 		SOCKET clientSocket;
@@ -75,7 +84,6 @@ int main() {
 
 		Session session = Session{ clientSocket };
 		WSAEVENT wsaEvent = ::WSACreateEvent();
-		session.overlapped.hEvent = wsaEvent;
 
 		cout << "Client connected!" << endl;
 
@@ -87,16 +95,21 @@ int main() {
 			DWORD recvLen = 0;
 			DWORD flags = 0;
 
-			if (::WSARecv(clientSocket, &wsaBuf, 1, &recvLen, &flags, &session.overlapped, nullptr) == SOCKET_ERROR) {
+			if (::WSARecv(clientSocket, &wsaBuf, 1, &recvLen, &flags, &session.overlapped, RecvCallback) == SOCKET_ERROR) {
 				if (::WSAGetLastError() == WSA_IO_PENDING) {
-					::WSAWaitForMultipleEvents(1, &wsaEvent, TRUE, WSA_INFINITE, FALSE);
-					::WSAGetOverlappedResult(session.socket, &session.overlapped, &recvLen, FALSE, &flags);
+					//Pending
+					//Alertable Wait
+					::SleepEx(INFINITE, TRUE);
+					//::WSAWaitForMultipleEvents(1, &wsaEvent, TRUE, WSA_INFINITE, TRUE);
 				}
 				else {
+					//TODO : 문제상황
 					break;
 				}
 			}
-			cout << "Data Recv Len = " << recvLen << endl;
+			else {
+				cout << "Data Recv Len = " << recvLen << endl;
+			}
 		}
 		::closesocket(session.socket);
 		::WSACloseEvent(wsaEvent);
