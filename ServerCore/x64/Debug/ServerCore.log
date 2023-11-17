@@ -1,13 +1,6 @@
-﻿  pch.cpp
-  Allocator.cpp
-  CoreGlobal.cpp
+﻿  CoreGlobal.cpp
   CorePch.cpp
-  CoreTLS.cpp
-  DeadLockProfiler.cpp
-  Lock.cpp
-  Memory.cpp
-  MemoryPool.cpp
-  RefCounting.cpp
+  SocketUtils.cpp
   ThreadManager.cpp
   코드를 생성하고 있습니다...
   ServerCore.vcxproj -> C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\Libraries\Debug\ServerCore.lib
