@@ -3,9 +3,9 @@
 #include "IocpEvent.h"
 #include "NetAddress.h"
 
-/*----------------
+/*--------------
 	Session
------------------*/
+---------------*/
 
 class Session : public IocpObject
 {
@@ -14,18 +14,18 @@ public:
 	virtual ~Session();
 
 public:
-	/* 정보 관련*/
+	/* 정보 관련 */
 	void		SetNetAddress(NetAddress address) { _netAddress = address; }
 	NetAddress	GetAddress() { return _netAddress; }
 	SOCKET		GetSocket() { return _socket; }
 
 public:
 	/* 인터페이스 구현 */
-	virtual HANDLE	GetHandle() override;
-	virtual void	Dispatch(class IocpEvent* iocpEvent, int32 numOfBytes = 0) override;
+	virtual HANDLE		GetHandle() override;
+	virtual void		Dispatch(class IocpEvent* iocpEvent, int32 numOfBytes = 0) override;
 
 public:
-	// TEMP 
+	// TEMP
 	char _recvBuffer[1000];
 
 private:

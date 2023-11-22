@@ -1,21 +1,19 @@
 ﻿#include "pch.h"
 #include <iostream>
 
-#include <WinSock2.h>
+#include <winsock2.h>
 #include <mswsock.h>
 #include <ws2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
 
-void HandleError(const char* cause) {
+void HandleError(const char* cause)
+{
 	int32 errCode = ::WSAGetLastError();
 	cout << cause << " ErrorCode : " << errCode << endl;
 }
 
 int main()
-{	
-	this_thread::sleep_for(1s);
-
-	// WinSock 라이브러리 초기화
+{
 	WSAData wsaData;
 	if (::WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		return 0;
@@ -34,18 +32,18 @@ int main()
 	::inet_pton(AF_INET, "127.0.0.1", &serverAddr.sin_addr);
 	serverAddr.sin_port = ::htons(7777);
 
-
 	// Connect
-	while (true) {
-		if (::connect(clientSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) {
-			//문제상황이 아니면 다음 시도
+	while (true)
+	{
+		if (::connect(clientSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
+		{
+			// 원래 블록했어야 했는데... 너가 논블로킹으로 하라며?
 			if (::WSAGetLastError() == WSAEWOULDBLOCK)
 				continue;
-			//이미 연결된 상태라면
+			// 이미 연결된 상태라면 break
 			if (::WSAGetLastError() == WSAEISCONN)
 				break;
-			
-			//Error
+			// Error
 			break;
 		}
 	}
@@ -57,35 +55,38 @@ int main()
 	WSAOVERLAPPED overlapped = {};
 	overlapped.hEvent = wsaEvent;
 
-
-	//Send
-	while (true) {
+	// Send
+	while (true)
+	{
 		WSABUF wsaBuf;
 		wsaBuf.buf = sendBuffer;
 		wsaBuf.len = 100;
 
 		DWORD sendLen = 0;
 		DWORD flags = 0;
-		if (::WSASend(clientSocket, &wsaBuf, 1, &sendLen, flags, &overlapped, nullptr) == SOCKET_ERROR) {
-			if (::WSAGetLastError() == WSA_IO_PENDING) {
+		if (::WSASend(clientSocket, &wsaBuf, 1, &sendLen, flags, &overlapped, nullptr) == SOCKET_ERROR)
+		{
+			if (::WSAGetLastError() == WSA_IO_PENDING)
+			{
+				// Pending
 				::WSAWaitForMultipleEvents(1, &wsaEvent, TRUE, WSA_INFINITE, FALSE);
 				::WSAGetOverlappedResult(clientSocket, &overlapped, &sendLen, FALSE, &flags);
 			}
-			else {
-				//문제가 있는 상황
+			else
+			{
+				// 진짜 문제 있는 상황
 				break;
 			}
 		}
 
-		cout << "Send Data Len = " << sizeof(sendBuffer) << endl;
-		
+		cout << "Send Data ! Len = " << sizeof(sendBuffer) << endl;
 
 		this_thread::sleep_for(1s);
 	}
 
-	//소켓 리소스 반환
+	// 소켓 리소스 반환
 	::closesocket(clientSocket);
 
-	//WindSock 종료
+	// 윈속 종료
 	::WSACleanup();
 }

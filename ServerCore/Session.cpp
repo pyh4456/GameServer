@@ -2,9 +2,9 @@
 #include "Session.h"
 #include "SocketUtils.h"
 
-/*----------------
+/*--------------
 	Session
------------------*/
+---------------*/
 
 Session::Session()
 {

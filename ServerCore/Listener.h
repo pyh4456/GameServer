@@ -1,13 +1,13 @@
 #pragma once
 #include "IocpCore.h"
 #include "NetAddress.h"
-#include "IocpEvent.h"
 
 class AcceptEvent;
+class ServerService;
 
-/*-----------------
+/*--------------
 	Listener
-------------------*/
+---------------*/
 
 class Listener : public IocpObject
 {
@@ -17,8 +17,8 @@ public:
 
 public:
 	/* 외부에서 사용 */
-	bool StartAcccept(NetAddress netAddress);
-	void CloseCoskt();
+	bool StartAccept(ServerServiceRef service);
+	void CloseSocket();
 
 public:
 	/* 인터페이스 구현 */
@@ -33,5 +33,6 @@ private:
 protected:
 	SOCKET _socket = INVALID_SOCKET;
 	Vector<AcceptEvent*> _acceptEvents;
+	ServerServiceRef _service;
 };
 

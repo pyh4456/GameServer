@@ -12,6 +12,7 @@ C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\MemoryPool.cpp;C:
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\NetAddress.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\NetAddress.obj
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\pch.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\pch.obj
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\RefCounting.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\RefCounting.obj
+C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\Service.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\Service.obj
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\Session.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\Session.obj
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\SocketUtils.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\SocketUtils.obj
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\ThreadManager.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\ThreadManager.obj

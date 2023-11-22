@@ -14,7 +14,7 @@
       <UniqueIdentifier>{0a8a1a96-3bcc-4f5b-ac25-3388457fad31}</UniqueIdentifier>
     </Filter>
     <Filter Include="Memory">
-      <UniqueIdentifier>{e90379aa-6cb6-45e4-bff5-48696aebb28d}</UniqueIdentifier>
+      <UniqueIdentifier>{903143c9-12f7-436d-8004-490b4f0d31bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +84,9 @@
     <ClInclude Include="Session.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Service.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CorePch.cpp">
@@ -135,6 +138,9 @@
       <Filter>Network</Filter>
     </ClCompile>
     <ClCompile Include="Session.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Service.cpp">
       <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>

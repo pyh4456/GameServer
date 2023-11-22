@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "CoreGlobal.h"
 #include "ThreadManager.h"
+#include "Memory.h"
 #include "DeadLockProfiler.h"
 #include "SocketUtils.h"
-
 
 ThreadManager*		GThreadManager = nullptr;
 Memory*				GMemory = nullptr;
