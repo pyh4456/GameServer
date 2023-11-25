@@ -1,10 +1,5 @@
 ﻿#include "pch.h"
 #include <iostream>
-#include "CorePch.h"
-#include <atomic>
-#include <mutex>
-#include <windows.h>
-#include <future>
 #include "ThreadManager.h"
 
 #include "Service.h"
@@ -13,10 +8,16 @@
 class GameSession : public Session
 {
 public:
+	~GameSession()
+	{
+		cout << "Client Disconnected" << endl;
+	}
+
 	virtual int32 OnRecv(BYTE* buffer, int32 len) override
 	{
 		// Echo
 		cout << "OnRecv Len = " << len << endl;
+		cout << "OnRecv Data = " << buffer << endl;
 		Send(buffer, len);
 		return len;
 	}

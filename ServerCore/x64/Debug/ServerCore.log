@@ -1,7 +1,2 @@
-﻿  IocpCore.cpp
-  IocpEvent.cpp
-  Listener.cpp
-  Service.cpp
-  Session.cpp
-  코드를 생성하고 있습니다...
+﻿  Session.cpp
   ServerCore.vcxproj -> C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\Libraries\Debug\ServerCore.lib
