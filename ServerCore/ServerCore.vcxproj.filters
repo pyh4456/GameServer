@@ -90,6 +90,15 @@
     <ClInclude Include="RecvBuffer.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="SendBuffer.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSessionManager.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSession.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CorePch.cpp">
@@ -148,6 +157,15 @@
     </ClCompile>
     <ClCompile Include="RecvBuffer.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SendBuffer.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSessionManager.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSession.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
