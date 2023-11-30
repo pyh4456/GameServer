@@ -1,1 +1,3 @@
-﻿  GameServer.vcxproj -> C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\Binary\Debug\GameServer.exe
+﻿  pch.cpp
+  GameServer.cpp
+  GameServer.vcxproj -> C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\Binary\Debug\GameServer.exe
