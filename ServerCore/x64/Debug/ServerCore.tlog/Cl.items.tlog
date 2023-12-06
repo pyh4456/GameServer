@@ -1,4 +1,6 @@
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\Allocator.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\Allocator.obj
+C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\BufferReader.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\BufferReader.obj
+C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\BufferWriter.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\BufferWriter.obj
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\CoreGlobal.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\CoreGlobal.obj
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\CorePch.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\CorePch.obj
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\CoreTLS.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\CoreTLS.obj
