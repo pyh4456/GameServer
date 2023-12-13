@@ -5,8 +5,6 @@ C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\CoreGlobal.cpp;C:
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\CorePch.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\CorePch.obj
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\CoreTLS.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\CoreTLS.obj
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\DeadLockProfiler.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\DeadLockProfiler.obj
-C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\GameSession.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\GameSession.obj
-C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\GameSessionManager.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\GameSessionManager.obj
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\IocpCore.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\IocpCore.obj
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\IocpEvent.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\IocpEvent.obj
 C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\Listener.cpp;C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\ServerCore\x64\Debug\Listener.obj
