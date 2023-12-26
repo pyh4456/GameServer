@@ -17,61 +17,70 @@ void ClientPacketHandler::HandlePacket(BYTE* buffer, int32 len)
 	}
 }
 
-//패킷 설계 TEMP
-struct BuffData
+#pragma pack(1)
+// [PKT_S_TEST][BuffListItem BuffListItem ... BuffListItem]
+struct PKT_S_TEST
 {
-	uint64 buffId;
-	float remainTime;
-};
+	struct BuffListItem
+	{
+		uint64 buffId;
+		float remainTime;
+	};
 
-struct S_TEST
-{
+	uint16 packetSize; // 공용 헤더
+	uint16 packetId; // 공용 헤더
 	uint64 id;
 	uint32 hp;
 	uint16 attack;
+	uint16 buffsOffset;
+	uint16 buffsCount;
 
-	vector<BuffData> buffs;
+	bool Validate()
+	{
+		uint32 size = 0;
 
-	wstring name;
+		size += sizeof(PKT_S_TEST);
+		size += buffsCount * sizeof(BuffListItem);
+		if (size != packetSize)
+			return false;
+
+		if (buffsOffset + buffsCount * sizeof(BuffListItem) > packetSize)
+			return false;
+
+		return true;
+
+	}
+	//vector<BuffData> buffs;
+	//wstring name;
 };
+#pragma pack()
 
 void ClientPacketHandler::Handle_S_TEST(BYTE* buffer, int32 len)
 {
 	BufferReader br(buffer, len);
 
-	PacketHeader header;
-	br >> header;
+	if (len < sizeof(PKT_S_TEST))
+		return;
 
-	uint64 id;
-	uint32 hp;
-	uint16 attack;
-	br >> id >> hp >> attack;
+	PKT_S_TEST pkt;
+	br >> pkt;
 
-	cout << "ID : " << id << ", HP : " << hp << ", ATT : " << attack << endl;
+	if (pkt.Validate() == false)
+		return;
 
-	vector<BuffData> buffs;
-	uint16 buffCount;
-	br >> buffCount;
+	//cout << "ID : " << id << ", HP : " << hp << ", ATT : " << attack << endl;
+
+	vector<PKT_S_TEST::BuffListItem> buffs;
 	
-	buffs.resize(buffCount);
-	for (int32 i = 0; i < buffCount; i++)
+	buffs.resize(pkt.buffsCount);
+	for (int32 i = 0; i < pkt.buffsCount; i++)
 	{
-		br >> buffs[i].buffId >> buffs[i].remainTime;
+		br >> buffs[i];
 	}
 
-	cout << "BuffCount : " << buffCount << endl;
-	for (int32 i = 0; i < buffCount; i++)
+	cout << "BuffCount : " << pkt.buffsCount << endl;
+	for (int32 i = 0; i < pkt.buffsCount; i++)
 	{
 		cout << "BuffInfo : " << buffs[i].buffId << " " << buffs[i].remainTime << endl;
 	}
-
-	wstring name;
-	uint16 nameLen;
-	br >> nameLen;
-	name.resize(nameLen);
-
-	br.Read((void*)name.data(), nameLen * sizeof(WCHAR));
-
-	wcout.imbue(std::locale("kor"));
-	wcout << name << endl;
 }

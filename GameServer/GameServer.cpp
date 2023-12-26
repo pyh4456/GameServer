@@ -11,8 +11,23 @@
 
 #include "tchar.h"
 
+#pragma pack(1)
+struct PKT_S_TEST
+{
+	uint64 id;
+	uint32 hp;
+	uint16 attack;
+
+};
+#pragma pack()
+
 int main()
 {
+	PKT_S_TEST pkt;
+	pkt.hp = 1;
+	pkt.id = 2;
+	pkt.attack = 3;
+
 	ServerServiceRef service = MakeShared<ServerService>(
 		NetAddress(L"127.0.0.1", 7777),
 		MakeShared<IocpCore>(),

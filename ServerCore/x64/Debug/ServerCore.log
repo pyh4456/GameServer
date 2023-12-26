@@ -1,2 +1,26 @@
-﻿  BufferWriter.cpp
-  ServerCore.vcxproj -> C:\Users\ParkYoonHyeong\Documents\GitHub\GameServer\Libraries\Debug\ServerCore.lib
+﻿  pch.cpp
+  Allocator.cpp
+  BufferReader.cpp
+  BufferWriter.cpp
+  CoreGlobal.cpp
+  CorePch.cpp
+  CoreTLS.cpp
+  DeadLockProfiler.cpp
+  IocpCore.cpp
+  IocpEvent.cpp
+  Listener.cpp
+  Lock.cpp
+  Memory.cpp
+  MemoryPool.cpp
+  NetAddress.cpp
+  RecvBuffer.cpp
+  RefCounting.cpp
+  SendBuffer.cpp
+  Service.cpp
+  Session.cpp
+  SocketUtils.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  ThreadManager.cpp
+  코드를 생성하고 있습니다...
+  ServerCore.vcxproj -> C:\Users\ParkYoonHeong\Documents\GitHub\GameServer\Libraries\Debug\ServerCore.lib
