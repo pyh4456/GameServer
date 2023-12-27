@@ -18,10 +18,10 @@ void ClientPacketHandler::HandlePacket(BYTE* buffer, int32 len)
 }
 
 #pragma pack(1)
-// [PKT_S_TEST][BuffListItem BuffListItem ... BuffListItem]
+// [PKT_S_TEST][BuffsListItem BuffsListItem ... BuffsListItem]
 struct PKT_S_TEST
 {
-	struct BuffListItem
+	struct BuffsListItem
 	{
 		uint64 buffId;
 		float remainTime;
@@ -40,15 +40,27 @@ struct PKT_S_TEST
 		uint32 size = 0;
 
 		size += sizeof(PKT_S_TEST);
-		size += buffsCount * sizeof(BuffListItem);
+		if (packetSize < size)
+			return false;
+
+		size += buffsCount * sizeof(BuffsListItem);
 		if (size != packetSize)
 			return false;
 
-		if (buffsOffset + buffsCount * sizeof(BuffListItem) > packetSize)
+		if (buffsOffset + buffsCount * sizeof(BuffsListItem) > packetSize)
 			return false;
 
 		return true;
 
+	}
+
+	using BuffsList = PacketList<PKT_S_TEST::BuffsListItem>;
+
+	BuffsList GetBuffsList()
+	{
+		BYTE* data = reinterpret_cast<BYTE*>(this);
+		data += buffsOffset;
+		return BuffsList(reinterpret_cast<PKT_S_TEST::BuffsListItem*>(data), buffsCount);
 	}
 	//vector<BuffData> buffs;
 	//wstring name;
@@ -59,28 +71,29 @@ void ClientPacketHandler::Handle_S_TEST(BYTE* buffer, int32 len)
 {
 	BufferReader br(buffer, len);
 
-	if (len < sizeof(PKT_S_TEST))
-		return;
+	PKT_S_TEST* pkt = reinterpret_cast<PKT_S_TEST*>(buffer);
 
-	PKT_S_TEST pkt;
-	br >> pkt;
 
-	if (pkt.Validate() == false)
+	if (pkt->Validate() == false)
 		return;
 
 	//cout << "ID : " << id << ", HP : " << hp << ", ATT : " << attack << endl;
 
-	vector<PKT_S_TEST::BuffListItem> buffs;
-	
-	buffs.resize(pkt.buffsCount);
-	for (int32 i = 0; i < pkt.buffsCount; i++)
-	{
-		br >> buffs[i];
-	}
+	PKT_S_TEST::BuffsList buffs = pkt->GetBuffsList();
 
-	cout << "BuffCount : " << pkt.buffsCount << endl;
-	for (int32 i = 0; i < pkt.buffsCount; i++)
+	cout << "BuffCount : " << buffs.Count() << endl;
+	for (int32 i = 0; i < buffs.Count(); i++)
 	{
 		cout << "BuffInfo : " << buffs[i].buffId << " " << buffs[i].remainTime << endl;
+	}
+
+	for (auto it = buffs.begin(); it != buffs.end(); ++it)
+	{
+		cout << "BuffInfo : " << it->buffId << " " << it->remainTime << endl;
+	}
+
+	for (auto& buff : buffs)
+	{
+		cout << "BuffInfo : " << buff.buffId << " " << buff.remainTime << endl;
 	}
 }
