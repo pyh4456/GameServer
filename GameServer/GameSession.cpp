@@ -17,6 +17,7 @@ void GameSession::OnRecvPacket(BYTE* buffer, int32 len)
 {
 	ServerPacketHandler::HandlePacket(buffer, len);
 }
+
 void GameSession::OnSend(int32 len)
 {
 }

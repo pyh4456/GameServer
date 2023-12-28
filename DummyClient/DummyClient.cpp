@@ -1,6 +1,4 @@
 ﻿#include "pch.h"
-#include <iostream>
-
 #include "ThreadManager.h"
 #include "Service.h"
 #include "Session.h"
@@ -14,13 +12,12 @@ class ServerSession : public PacketSession
 public:
 	~ServerSession()
 	{
-		cout << "Server Disconnected" << endl;
+		cout << "~ServerSession" << endl;
 	}
 
-	virtual void OnConnected() override 
+	virtual void OnConnected() override
 	{
 		//cout << "Connected To Server" << endl;
-		
 	}
 
 	virtual void OnRecvPacket(BYTE* buffer, int32 len) override
@@ -39,7 +36,6 @@ public:
 	}
 };
 
-
 int main()
 {
 	this_thread::sleep_for(1s);
@@ -47,8 +43,7 @@ int main()
 	ClientServiceRef service = MakeShared<ClientService>(
 		NetAddress(L"127.0.0.1", 7777),
 		MakeShared<IocpCore>(),
-		MakeShared<ServerSession>,
-		// TODO : SessionManager 등
+		MakeShared<ServerSession>, // TODO : SessionManager 등
 		1);
 
 	ASSERT_CRASH(service->Start());

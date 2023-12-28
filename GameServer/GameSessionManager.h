@@ -4,7 +4,6 @@ class GameSession;
 
 using GameSessionRef = shared_ptr<GameSession>;
 
-
 class GameSessionManager
 {
 public:
@@ -13,7 +12,7 @@ public:
 	void Broadcast(SendBufferRef sendBuffer);
 
 private:
-	USE_LOCK
+	USE_LOCK;
 	Set<GameSessionRef> _sessions;
 };
 

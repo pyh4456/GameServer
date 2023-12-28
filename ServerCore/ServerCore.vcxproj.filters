@@ -93,10 +93,10 @@
     <ClInclude Include="SendBuffer.h">
       <Filter>Network</Filter>
     </ClInclude>
-    <ClInclude Include="BufferReader.h">
+    <ClInclude Include="BufferWriter.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="BufferWriter.h">
+    <ClInclude Include="BufferReader.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

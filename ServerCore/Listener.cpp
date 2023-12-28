@@ -114,6 +114,5 @@ void Listener::ProcessAccept(AcceptEvent* acceptEvent)
 
 	session->SetNetAddress(NetAddress(sockAddress));
 	session->ProcessConnect();
-
 	RegisterAccept(acceptEvent);
 }
