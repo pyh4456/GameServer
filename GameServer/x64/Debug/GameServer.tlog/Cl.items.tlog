@@ -2,4 +2,5 @@ C:\Users\ParkYoonHeong\Documents\GitHub\GameServer\GameServer\GameServer.cpp;C:\
 C:\Users\ParkYoonHeong\Documents\GitHub\GameServer\GameServer\GameSession.cpp;C:\Users\ParkYoonHeong\Documents\GitHub\GameServer\GameServer\x64\Debug\GameSession.obj
 C:\Users\ParkYoonHeong\Documents\GitHub\GameServer\GameServer\GameSessionManager.cpp;C:\Users\ParkYoonHeong\Documents\GitHub\GameServer\GameServer\x64\Debug\GameSessionManager.obj
 C:\Users\ParkYoonHeong\Documents\GitHub\GameServer\GameServer\pch.cpp;C:\Users\ParkYoonHeong\Documents\GitHub\GameServer\GameServer\x64\Debug\pch.obj
+C:\Users\ParkYoonHeong\Documents\GitHub\GameServer\GameServer\Protocol.pb.cc;C:\Users\ParkYoonHeong\Documents\GitHub\GameServer\GameServer\x64\Debug\Protocol.pb.obj
 C:\Users\ParkYoonHeong\Documents\GitHub\GameServer\GameServer\ServerPacketHandler.cpp;C:\Users\ParkYoonHeong\Documents\GitHub\GameServer\GameServer\x64\Debug\ServerPacketHandler.obj
