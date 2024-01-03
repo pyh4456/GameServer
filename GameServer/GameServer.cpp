@@ -11,6 +11,7 @@
 
 int main()
 {
+	ServerPacketHandler::Init();
 	ServerServiceRef service = MakeShared<ServerService>(
 		NetAddress(L"127.0.0.1", 7777),
 		MakeShared<IocpCore>(),
