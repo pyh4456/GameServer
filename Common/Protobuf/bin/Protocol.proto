@@ -4,6 +4,11 @@ package Protocol;
 import "Enum.proto";
 import "Struct.proto";
 
+message C_TEST
+{
+	uint64 id = 1;
+}
+
 message S_TEST
 {
 	uint64 id = 1;
