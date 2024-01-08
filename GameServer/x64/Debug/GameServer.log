@@ -1,23 +1,25 @@
-﻿Struct.proto(4,1): warning G1A4DC0EC: Import Enum.proto is unused.
-Protocol.proto(4,1): warning G1A4DC0EC: Import Enum.proto is unused.
+﻿Protocol.proto(4,1): warning G1A4DC0EC: Import Enum.proto is unused.
   #pragma once
   #include "Protocol.pb.h"
   
   using PacketHandlerFunc = std::function<bool(PacketSessionRef&, BYTE*, int32)>;
   extern PacketHandlerFunc GPacketHandler[UINT16_MAX];
   
-  
   enum : uint16
   {
-  	PKT_C_TEST = 1000,
-  	PKT_S_TEST = 1001,
-  	PKT_S_LOGIN = 1002,
-  
+  	PKT_C_LOGIN = 1000,
+  	PKT_S_LOGIN = 1001,
+  	PKT_C_ENTER_GAME = 1002,
+  	PKT_S_ENTER_GAME = 1003,
+  	PKT_C_CHAT = 1004,
+  	PKT_S_CHAT = 1005,
   };
   
-  //Custom Handlers
+  // Custom Handlers
   bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
-  bool Handle_C_TEST(PacketSessionRef& session, Protocol::C_TEST& pkt);
+  bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt);
+  bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt);
+  bool Handle_C_CHAT(PacketSessionRef& session, Protocol::C_CHAT& pkt);
   
   class ClientPacketHandler
   {
@@ -26,8 +28,9 @@ Protocol.proto(4,1): warning G1A4DC0EC: Import Enum.proto is unused.
   	{
   		for (int32 i = 0; i < UINT16_MAX; i++)
   			GPacketHandler[i] = Handle_INVALID;
-  		GPacketHandler[PKT_C_TEST] = [](PacketSessionRef& session, BYTE* buffer, int32 len) {return HandlePacket<Protocol::C_TEST>(Handle_C_TEST, session, buffer, len); };
-  		
+  		GPacketHandler[PKT_C_LOGIN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_LOGIN>(Handle_C_LOGIN, session, buffer, len); };
+  		GPacketHandler[PKT_C_ENTER_GAME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ENTER_GAME>(Handle_C_ENTER_GAME, session, buffer, len); };
+  		GPacketHandler[PKT_C_CHAT] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_CHAT>(Handle_C_CHAT, session, buffer, len); };
   	}
   
   	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -35,16 +38,16 @@ Protocol.proto(4,1): warning G1A4DC0EC: Import Enum.proto is unused.
   		PacketHeader* header = reinterpret_cast<PacketHeader*>(buffer);
   		return GPacketHandler[header->id](session, buffer, len);
   	}
-  	static SendBufferRef MakeSendBuffer(Protocol::S_TEST& pkt) { return MakeSendBuffer(pkt, PKT_S_TEST); }
   	static SendBufferRef MakeSendBuffer(Protocol::S_LOGIN& pkt) { return MakeSendBuffer(pkt, PKT_S_LOGIN); }
-  	
+  	static SendBufferRef MakeSendBuffer(Protocol::S_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_S_ENTER_GAME); }
+  	static SendBufferRef MakeSendBuffer(Protocol::S_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_S_CHAT); }
   
   private:
   	template<typename PacketType, typename ProcessFunc>
   	static bool HandlePacket(ProcessFunc func, PacketSessionRef& session, BYTE* buffer, int32 len)
   	{
   		PacketType pkt;
-  		if (pkt.ParseFromArray(buffer + sizeof(PacketHeader), len - sizeof(PacketHeader)))
+  		if (pkt.ParseFromArray(buffer + sizeof(PacketHeader), len - sizeof(PacketHeader)) == false)
   			return false;
   
   		return func(session, pkt);
@@ -72,19 +75,21 @@ Protocol.proto(4,1): warning G1A4DC0EC: Import Enum.proto is unused.
   using PacketHandlerFunc = std::function<bool(PacketSessionRef&, BYTE*, int32)>;
   extern PacketHandlerFunc GPacketHandler[UINT16_MAX];
   
-  
   enum : uint16
   {
-  	PKT_C_TEST = 1000,
-  	PKT_S_TEST = 1001,
-  	PKT_S_LOGIN = 1002,
-  
+  	PKT_C_LOGIN = 1000,
+  	PKT_S_LOGIN = 1001,
+  	PKT_C_ENTER_GAME = 1002,
+  	PKT_S_ENTER_GAME = 1003,
+  	PKT_C_CHAT = 1004,
+  	PKT_S_CHAT = 1005,
   };
   
-  //Custom Handlers
+  // Custom Handlers
   bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
-  bool Handle_S_TEST(PacketSessionRef& session, Protocol::S_TEST& pkt);
   bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt);
+  bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt);
+  bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt);
   
   class ServerPacketHandler
   {
@@ -93,9 +98,9 @@ Protocol.proto(4,1): warning G1A4DC0EC: Import Enum.proto is unused.
   	{
   		for (int32 i = 0; i < UINT16_MAX; i++)
   			GPacketHandler[i] = Handle_INVALID;
-  		GPacketHandler[PKT_S_TEST] = [](PacketSessionRef& session, BYTE* buffer, int32 len) {return HandlePacket<Protocol::S_TEST>(Handle_S_TEST, session, buffer, len); };
-  		GPacketHandler[PKT_S_LOGIN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) {return HandlePacket<Protocol::S_LOGIN>(Handle_S_LOGIN, session, buffer, len); };
-  		
+  		GPacketHandler[PKT_S_LOGIN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_LOGIN>(Handle_S_LOGIN, session, buffer, len); };
+  		GPacketHandler[PKT_S_ENTER_GAME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ENTER_GAME>(Handle_S_ENTER_GAME, session, buffer, len); };
+  		GPacketHandler[PKT_S_CHAT] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_CHAT>(Handle_S_CHAT, session, buffer, len); };
   	}
   
   	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -103,15 +108,16 @@ Protocol.proto(4,1): warning G1A4DC0EC: Import Enum.proto is unused.
   		PacketHeader* header = reinterpret_cast<PacketHeader*>(buffer);
   		return GPacketHandler[header->id](session, buffer, len);
   	}
-  	static SendBufferRef MakeSendBuffer(Protocol::C_TEST& pkt) { return MakeSendBuffer(pkt, PKT_C_TEST); }
-  	
+  	static SendBufferRef MakeSendBuffer(Protocol::C_LOGIN& pkt) { return MakeSendBuffer(pkt, PKT_C_LOGIN); }
+  	static SendBufferRef MakeSendBuffer(Protocol::C_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_C_ENTER_GAME); }
+  	static SendBufferRef MakeSendBuffer(Protocol::C_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_C_CHAT); }
   
   private:
   	template<typename PacketType, typename ProcessFunc>
   	static bool HandlePacket(ProcessFunc func, PacketSessionRef& session, BYTE* buffer, int32 len)
   	{
   		PacketType pkt;
-  		if (pkt.ParseFromArray(buffer + sizeof(PacketHeader), len - sizeof(PacketHeader)))
+  		if (pkt.ParseFromArray(buffer + sizeof(PacketHeader), len - sizeof(PacketHeader)) == false)
   			return false;
   
   		return func(session, pkt);
@@ -167,9 +173,11 @@ Protocol.proto(4,1): warning G1A4DC0EC: Import Enum.proto is unused.
   Protocol.pb.cc
   Struct.pb.cc
   코드를 생성하고 있습니다...
+  ClientPacketHandler.cpp
   GameServer.cpp
   GameSession.cpp
   GameSessionManager.cpp
-  ClientPacketHandler.cpp
+  Player.cpp
+  Room.cpp
   코드를 생성하고 있습니다...
-  GameServer.vcxproj -> C:\Users\ParkYoonHeong\Desktop\GameServer\Binary\Debug\GameServer.exe
+  GameServer.vcxproj -> C:\Users\ParkYoonHeong\Documents\GitHub\GameServer\Binary\Debug\GameServer.exe
