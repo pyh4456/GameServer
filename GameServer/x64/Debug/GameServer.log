@@ -177,6 +177,7 @@
   GameServer.cpp
   GameSession.cpp
   GameSessionManager.cpp
+  Job.cpp
   Player.cpp
   Room.cpp
   코드를 생성하고 있습니다...
