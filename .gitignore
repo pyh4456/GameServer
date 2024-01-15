@@ -10,7 +10,7 @@
 *.pdb
 *.tlog
 *.ilk
-Binary/
-DummyClient/x64/
-GameServer/x64/
-ServerCore/x64/
+Binary\
+DummyClient\x64\
+GameServer\x64\
+ServerCore\x64\
