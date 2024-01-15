@@ -6,3 +6,8 @@
 *.lo
 *.o
 *.obj
+*.pch
+*.pdb
+*.tlog
+*.ilk
+Binary/
