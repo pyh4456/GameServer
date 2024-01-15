@@ -1,6 +1,11 @@
 .vs/
+Binary/
 !Tools/
 !Common/
+!Libraries/Include/
+DummyClient/x64/
+GameServer/x64/
+ServerCore/x64/
 
 # Compiled Object files
 *.slo
