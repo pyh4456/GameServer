@@ -13,6 +13,25 @@
 #include "functional"
 #include "Player.h"
 
+enum
+{
+	// TODO : Job이 몰리는 정도에 따라 값을 변동해야 함
+	WORKER_TICK = 64
+};
+
+void DoWorkerJob(ServerServiceRef& service) {
+	while (true)
+	{
+		LEndTickCount = ::GetTickCount64() + WORKER_TICK;
+
+		//네트워크 입출력 처리
+		service->GetIocpCore()->Dispatch(10);
+
+		//글로벌 큐
+		ThreadManager::DoGlobalQueueWork();
+	}
+}
+
 
 int main()
 {
@@ -29,20 +48,14 @@ int main()
 
 	for (int32 i = 0; i < 5; i++)
 	{
-		GThreadManager->Launch([=]()
-			{
-				while (true)
-				{
-					service->GetIocpCore()->Dispatch();
-				}				
-			});
+		GThreadManager->Launch([&service]()
+		{
+			DoWorkerJob(service);
+		});
 	}	
 
-	while (true)
-	{
-		GRoom->FlushJob();
-		this_thread::sleep_for(1s);
-	}
+	//Main Thread
+	DoWorkerJob(service);
 
 	GThreadManager->Join();
 }
