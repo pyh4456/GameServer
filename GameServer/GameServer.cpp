@@ -27,6 +27,9 @@ void DoWorkerJob(ServerServiceRef& service) {
 		//네트워크 입출력 처리
 		service->GetIocpCore()->Dispatch(10);
 
+		//예약된 일감 처리
+		ThreadManager::DstributeReservedJobs();
+
 		//글로벌 큐
 		ThreadManager::DoGlobalQueueWork();
 	}
@@ -35,6 +38,9 @@ void DoWorkerJob(ServerServiceRef& service) {
 
 int main()
 {
+	GRoom->DoTimer(1000, [] {cout << "Hello 1000" << endl; });
+	GRoom->DoTimer(1000, [] {cout << "Hello 2000" << endl; });
+	GRoom->DoTimer(1000, [] {cout << "Hello 3000" << endl; });
 
 	ClientPacketHandler::Init();
 
