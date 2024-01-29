@@ -7,4 +7,4 @@ extern class GlobalQueue*		GGlobalQueue;
 extern class JobTimer*			GJobTimer;
 
 extern class DeadLockProfiler*	GDeadLockProfiler;
-
+extern class DBConnectionPool* GDBConnectionPool;
