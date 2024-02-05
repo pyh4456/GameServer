@@ -107,6 +107,10 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>CALL $(SolutionDir)Common\Protobuf\bin\GenPackets.bat
+CALL $(SolutionDir)Common\Procedures\GenProcs.bat</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -125,6 +129,10 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>CALL $(SolutionDir)Common\Protobuf\bin\GenPackets.bat
+CALL $(SolutionDir)Common\Procedures\GenProcs.bat</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -141,7 +149,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>CALL $(SolutionDir)Common\Protobuf\bin\GenPackets.bat</Command>
+      <Command>CALL $(SolutionDir)Common\Protobuf\bin\GenPackets.bat
+CALL $(SolutionDir)Common\Procedures\GenProcs.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -163,7 +172,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>CALL $(SolutionDir)Common\Protobuf\bin\GenPackets.bat</Command>
+      <Command>CALL $(SolutionDir)Common\Protobuf\bin\GenPackets.bat
+CALL $(SolutionDir)Common\Procedures\GenProcs.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -198,6 +208,7 @@
     <ClInclude Include="Enum.pb.h" />
     <ClInclude Include="GameSession.h" />
     <ClInclude Include="GameSessionManager.h" />
+    <ClInclude Include="GenProcedures.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Protocol.pb.h" />
@@ -206,6 +217,7 @@
     <ClInclude Include="Struct.pb.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Common\Procedures\GenProcs.bat" />
     <None Include="..\Common\Protobuf\bin\Enum.proto" />
     <None Include="..\Common\Protobuf\bin\GenPackets.bat" />
     <None Include="..\Common\Protobuf\bin\Protocol.proto" />
@@ -215,6 +227,7 @@
     <UpToDateCheckInput Include="..\Common\Protobuf\bin\Enum.proto" />
     <UpToDateCheckInput Include="..\Common\Protobuf\bin\Protocol.proto" />
     <UpToDateCheckInput Include="..\Common\Protobuf\bin\Struct.proto" />
+    <UpToDateCheckInput Include="GameDB.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="GameDB.xml" />
