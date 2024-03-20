@@ -3,10 +3,12 @@
 struct JobData
 {
 	JobData(weak_ptr<JobQueue> owner, JobRef job) : owner(owner), job(job)
-	{}
+	{
 
-	weak_ptr<JobQueue> owner;
-	JobRef job;
+	}
+
+	weak_ptr<JobQueue>	owner;
+	JobRef				job;
 };
 
 struct TimerItem
@@ -20,20 +22,20 @@ struct TimerItem
 	JobData* jobData = nullptr;
 };
 
-/*----------------
+/*--------------
 	JobTimer
-------------------*/
+---------------*/
 
 class JobTimer
 {
 public:
-	void Reserve(uint64 tickAfter, weak_ptr<JobQueue> owner, JobRef job);
-	void Distribute(uint64 now);
-	void Clear();
+	void			Reserve(uint64 tickAfter, weak_ptr<JobQueue> owner, JobRef job);
+	void			Distribute(uint64 now);
+	void			Clear();
 
 private:
 	USE_LOCK;
-	PriorityQueue<TimerItem> _items;
-	Atomic<bool> _distributing = false;
+	priority_queue<TimerItem>	_items;
+	atomic<bool>				_distributing = false;
 };
 

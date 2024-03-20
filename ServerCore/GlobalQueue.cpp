@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "GlobalQueue.h"
 
-/*--------------
+/*----------------
 	GlobalQueue
-----------------*/
+-----------------*/
 
 GlobalQueue::GlobalQueue()
 {

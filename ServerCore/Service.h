@@ -28,7 +28,7 @@ public:
 	virtual void		CloseService();
 	void				SetSessionFactory(SessionFactory func) { _sessionFactory = func; }
 
-	void				BroadCast(SendBufferRef sendBuffer);
+	void				Broadcast(SendBufferRef sendBuffer);
 	SessionRef			CreateSession();
 	void				AddSession(SessionRef session);
 	void				ReleaseSession(SessionRef session);
@@ -46,7 +46,7 @@ protected:
 	NetAddress			_netAddress = {};
 	IocpCoreRef			_iocpCore;
 
-	Set<SessionRef>		_sessions;
+	set<SessionRef>		_sessions;
 	int32				_sessionCount = 0;
 	int32				_maxSessionCount = 0;
 	SessionFactory		_sessionFactory;

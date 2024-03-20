@@ -181,7 +181,7 @@ void Session::RegisterSend()
 	}
 
 	// Scatter-Gather (흩어져 있는 데이터들을 모아서 한 방에 보낸다)
-	Vector<WSABUF> wsaBufs;
+	vector<WSABUF> wsaBufs;
 	wsaBufs.reserve(_sendEvent.sendBuffers.size());
 	for (SendBufferRef sendBuffer : _sendEvent.sendBuffers)
 	{

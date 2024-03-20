@@ -26,6 +26,6 @@ private:
 	int32			_bufferSize = 0;
 	int32			_readPos = 0;
 	int32			_writePos = 0;
-	Vector<BYTE>	_buffer;
+	vector<BYTE>	_buffer;
 };
 

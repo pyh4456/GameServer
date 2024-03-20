@@ -28,8 +28,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef GOOGLE_PROTOBUF_UTIL_CONVERTER_DATAPIECE_H__
-#define GOOGLE_PROTOBUF_UTIL_CONVERTER_DATAPIECE_H__
+#ifndef GOOGLE_PROTOBUF_UTIL_INTERNAL_DATAPIECE_H__
+#define GOOGLE_PROTOBUF_UTIL_INTERNAL_DATAPIECE_H__
 
 #include <cstdint>
 #include <string>
@@ -40,6 +40,7 @@
 #include <google/protobuf/stubs/statusor.h>
 #include <google/protobuf/stubs/strutil.h>
 
+// Must be included last.
 #include <google/protobuf/port_def.inc>
 
 namespace google {
@@ -97,7 +98,7 @@ class PROTOBUF_EXPORT DataPiece {
         str_(value),
         use_strict_base64_decoding_(use_strict_base64_decoding) {}
   // Constructor for bytes. The second parameter is not used.
-  DataPiece(StringPiece value, bool dummy, bool use_strict_base64_decoding)
+  DataPiece(StringPiece value, bool /*dummy*/, bool use_strict_base64_decoding)
       : type_(TYPE_BYTES),
         str_(value),
         use_strict_base64_decoding_(use_strict_base64_decoding) {}
@@ -215,4 +216,4 @@ class PROTOBUF_EXPORT DataPiece {
 
 #include <google/protobuf/port_undef.inc>
 
-#endif  // GOOGLE_PROTOBUF_UTIL_CONVERTER_DATAPIECE_H__
+#endif  // GOOGLE_PROTOBUF_UTIL_INTERNAL_DATAPIECE_H__

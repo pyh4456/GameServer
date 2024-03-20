@@ -44,7 +44,6 @@
 
 #include <google/protobuf/stubs/logging.h>
 #include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/stringprintf.h>
 #include <google/protobuf/io/printer.h>
 #include <google/protobuf/io/zero_copy_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
@@ -55,8 +54,9 @@
 #include <google/protobuf/map_field.h>
 #include <google/protobuf/message.h>
 #include <google/protobuf/text_format.h>
-#include <google/protobuf/util/field_comparator.h>
 #include <google/protobuf/stubs/strutil.h>
+#include <google/protobuf/stubs/stringprintf.h>
+#include <google/protobuf/util/field_comparator.h>
 
 // Always include as last one, otherwise it can break compilation
 #include <google/protobuf/port_def.inc>
@@ -65,6 +65,26 @@ namespace google {
 namespace protobuf {
 
 namespace util {
+
+namespace {
+
+std::string PrintShortTextFormat(const google::protobuf::Message& message) {
+  std::string debug_string;
+
+  google::protobuf::TextFormat::Printer printer;
+  printer.SetSingleLineMode(true);
+  printer.SetExpandAny(true);
+
+  printer.PrintToString(message, &debug_string);
+  // Single line mode currently might have an extra space at the end.
+  if (!debug_string.empty() && debug_string[debug_string.size() - 1] == ' ') {
+    debug_string.resize(debug_string.size() - 1);
+  }
+
+  return debug_string;
+}
+
+}  // namespace
 
 // A reporter to report the total number of diffs.
 // TODO(ykzhu): we can improve this to take into account the value differencers.
@@ -78,25 +98,28 @@ class NumDiffsReporter : public google::protobuf::util::MessageDifferencer::Repo
 
   // Report that a field has been added into Message2.
   void ReportAdded(
-      const google::protobuf::Message& message1, const google::protobuf::Message& message2,
+      const google::protobuf::Message& /* message1 */,
+      const google::protobuf::Message& /* message2 */,
       const std::vector<google::protobuf::util::MessageDifferencer::SpecificField>&
-          field_path) override {
+      /*field_path*/) override {
     ++num_diffs_;
   }
 
   // Report that a field has been deleted from Message1.
   void ReportDeleted(
-      const google::protobuf::Message& message1, const google::protobuf::Message& message2,
+      const google::protobuf::Message& /* message1 */,
+      const google::protobuf::Message& /* message2 */,
       const std::vector<google::protobuf::util::MessageDifferencer::SpecificField>&
-          field_path) override {
+      /*field_path*/) override {
     ++num_diffs_;
   }
 
   // Report that the value of a field has been modified.
   void ReportModified(
-      const google::protobuf::Message& message1, const google::protobuf::Message& message2,
+      const google::protobuf::Message& /* message1 */,
+      const google::protobuf::Message& /* message2 */,
       const std::vector<google::protobuf::util::MessageDifferencer::SpecificField>&
-          field_path) override {
+      /*field_path*/) override {
     ++num_diffs_;
   }
 
@@ -204,6 +227,28 @@ void MatchIndicesPostProcessorForSmartList(std::vector<int>* match_list1,
   }
 }
 
+void AddSpecificIndex(
+    google::protobuf::util::MessageDifferencer::SpecificField* specific_field,
+    const Message& message, const FieldDescriptor* field, int index) {
+  if (field->is_map()) {
+    const Reflection* reflection = message.GetReflection();
+    specific_field->map_entry1 =
+        &reflection->GetRepeatedMessage(message, field, index);
+  }
+  specific_field->index = index;
+}
+
+void AddSpecificNewIndex(
+    google::protobuf::util::MessageDifferencer::SpecificField* specific_field,
+    const Message& message, const FieldDescriptor* field, int index) {
+  if (field->is_map()) {
+    const Reflection* reflection = message.GetReflection();
+    specific_field->map_entry2 =
+        &reflection->GetRepeatedMessage(message, field, index);
+  }
+  specific_field->new_index = index;
+}
+
 MessageDifferencer::MapEntryKeyComparator::MapEntryKeyComparator(
     MessageDifferencer* message_differencer)
     : message_differencer_(message_differencer) {}
@@ -306,9 +351,14 @@ void MessageDifferencer::set_message_field_comparison(
   message_field_comparison_ = comparison;
 }
 
+MessageDifferencer::MessageFieldComparison
+MessageDifferencer::message_field_comparison() const {
+  return message_field_comparison_;
+}
+
 void MessageDifferencer::set_scope(Scope scope) { scope_ = scope; }
 
-MessageDifferencer::Scope MessageDifferencer::scope() { return scope_; }
+MessageDifferencer::Scope MessageDifferencer::scope() const { return scope_; }
 
 void MessageDifferencer::set_float_comparison(FloatComparison comparison) {
   default_field_comparator_.set_float_comparison(
@@ -322,7 +372,7 @@ void MessageDifferencer::set_repeated_field_comparison(
 }
 
 MessageDifferencer::RepeatedFieldComparison
-MessageDifferencer::repeated_field_comparison() {
+MessageDifferencer::repeated_field_comparison() const {
   return repeated_field_comparison_;
 }
 
@@ -759,7 +809,11 @@ bool MessageDifferencer::CompareWithFieldsInternal(
         for (int i = 0; i < count; ++i) {
           SpecificField specific_field;
           specific_field.field = field1;
-          specific_field.index = field1->is_repeated() ? i : -1;
+          if (field1->is_repeated()) {
+            AddSpecificIndex(&specific_field, message1, field1, i);
+          } else {
+            specific_field.index = -1;
+          }
 
           parent_fields->push_back(specific_field);
           reporter_->ReportDeleted(message1, message2, *parent_fields);
@@ -799,8 +853,13 @@ bool MessageDifferencer::CompareWithFieldsInternal(
         for (int i = 0; i < count; ++i) {
           SpecificField specific_field;
           specific_field.field = field2;
-          specific_field.index = field2->is_repeated() ? i : -1;
-          specific_field.new_index = specific_field.index;
+          if (field2->is_repeated()) {
+            specific_field.index = i;
+            AddSpecificNewIndex(&specific_field, message2, field2, i);
+          } else {
+            specific_field.index = -1;
+            specific_field.new_index = -1;
+          }
 
           parent_fields->push_back(specific_field);
           reporter_->ReportAdded(message1, message2, *parent_fields);
@@ -904,6 +963,10 @@ bool MessageDifferencer::IsMatch(
         reflection2->GetRepeatedMessage(*message2, repeated_field, index2);
     SpecificField specific_field;
     specific_field.field = repeated_field;
+    if (repeated_field->is_map()) {
+      specific_field.map_entry1 = &m1;
+      specific_field.map_entry2 = &m2;
+    }
     specific_field.index = index1;
     specific_field.new_index = index2;
     current_parent_fields.push_back(specific_field);
@@ -1116,7 +1179,7 @@ bool MessageDifferencer::CompareRepeatedRep(
     if (!simple_list && match_list1[i] == -1) {
       if (smart_list) {
         if (reporter_ == nullptr) return false;
-        specific_field.index = i;
+        AddSpecificIndex(&specific_field, message1, repeated_field, i);
         parent_fields->push_back(specific_field);
         reporter_->ReportDeleted(message1, message2, *parent_fields);
         parent_fields->pop_back();
@@ -1131,7 +1194,7 @@ bool MessageDifferencer::CompareRepeatedRep(
         GOOGLE_CHECK_LE(0, j);
         if (reporter_ == nullptr) return false;
         specific_field.index = j;
-        specific_field.new_index = j;
+        AddSpecificNewIndex(&specific_field, message2, repeated_field, j);
         parent_fields->push_back(specific_field);
         reporter_->ReportAdded(message1, message2, *parent_fields);
         parent_fields->pop_back();
@@ -1140,11 +1203,12 @@ bool MessageDifferencer::CompareRepeatedRep(
         match_list2[j] = -2;
       }
     }
-    specific_field.index = i;
+    AddSpecificIndex(&specific_field, message1, repeated_field, i);
     if (simple_list) {
-      specific_field.new_index = i;
+      AddSpecificNewIndex(&specific_field, message2, repeated_field, i);
     } else {
-      specific_field.new_index = match_list1[i];
+      AddSpecificNewIndex(&specific_field, message2, repeated_field,
+                          match_list1[i]);
       next_unmatched_index = match_list1[i] + 1;
     }
 
@@ -1184,7 +1248,7 @@ bool MessageDifferencer::CompareRepeatedRep(
 
     if (reporter_ == NULL) continue;
     specific_field.index = i;
-    specific_field.new_index = i;
+    AddSpecificNewIndex(&specific_field, message2, repeated_field, i);
     parent_fields->push_back(specific_field);
     reporter_->ReportAdded(message1, message2, *parent_fields);
     parent_fields->pop_back();
@@ -1194,7 +1258,7 @@ bool MessageDifferencer::CompareRepeatedRep(
     if (!simple_list && match_list1[i] != -1) continue;
     if (simple_list && i < count2) continue;
     assert(reporter_ != NULL);
-    specific_field.index = i;
+    AddSpecificIndex(&specific_field, message1, repeated_field, i);
     parent_fields->push_back(specific_field);
     reporter_->ReportDeleted(message1, message2, *parent_fields);
     parent_fields->pop_back();
@@ -1239,8 +1303,8 @@ bool MessageDifferencer::CompareFieldValueUsingParentFields(
       // Append currently compared field to the end of parent_fields.
       SpecificField specific_field;
       specific_field.field = field;
-      specific_field.index = index1;
-      specific_field.new_index = index2;
+      AddSpecificIndex(&specific_field, message1, field, index1);
+      AddSpecificNewIndex(&specific_field, message2, field, index2);
       parent_fields->push_back(specific_field);
       const bool compare_result = Compare(m1, m2, parent_fields);
       parent_fields->pop_back();
@@ -1377,7 +1441,7 @@ bool MessageDifferencer::UnpackAnyField::UnpackAny(
       any.GetDescriptor()->file()->pool()->FindMessageTypeByName(
           full_type_name);
   if (desc == NULL) {
-    GOOGLE_DLOG(ERROR) << "Proto type '" << full_type_name << "' not found";
+    GOOGLE_LOG(INFO) << "Proto type '" << full_type_name << "' not found";
     return false;
   }
 
@@ -1932,7 +1996,7 @@ void MessageDifferencer::StreamReporter::PrintPath(
       }
 
       if (specific_field.field->is_map()) {
-        PrintMapKey(field_path, left_side, specific_field, i);
+        PrintMapKey(left_side, specific_field);
         continue;
       }
     } else {
@@ -1968,14 +2032,13 @@ void MessageDifferencer::StreamReporter::PrintValue(
       if (field->is_map() && message1_ != nullptr && message2_ != nullptr) {
         fd = field_message.GetDescriptor()->field(1);
         if (fd->cpp_type() == FieldDescriptor::CPPTYPE_MESSAGE) {
-          output = field_message.GetReflection()
-                       ->GetMessage(field_message, fd)
-                       .ShortDebugString();
+          output = PrintShortTextFormat(
+              field_message.GetReflection()->GetMessage(field_message, fd));
         } else {
           TextFormat::PrintFieldValueToString(field_message, fd, -1, &output);
         }
       } else {
-        output = field_message.ShortDebugString();
+        output = PrintShortTextFormat(field_message);
       }
       if (output.empty()) {
         printer_->Print("{ }");
@@ -2038,66 +2101,21 @@ void MessageDifferencer::StreamReporter::Print(const std::string& str) {
 }
 
 void MessageDifferencer::StreamReporter::PrintMapKey(
-    const std::vector<SpecificField>& field_path, bool left_side,
-    const SpecificField& specific_field, size_t target_field_index) {
+    bool left_side, const SpecificField& specific_field) {
   if (message1_ == nullptr || message2_ == nullptr) {
-    GOOGLE_LOG(WARNING) << "PrintPath cannot log map keys; "
-                    "use SetMessages to provide the messages "
-                    "being compared prior to any processing.";
+    GOOGLE_LOG(INFO) << "PrintPath cannot log map keys; "
+                 "use SetMessages to provide the messages "
+                 "being compared prior to any processing.";
     return;
   }
-  auto get_target_message = [=](const SpecificField& specific_field,
-                                const Reflection* reflection,
-                                const Message* message) {
-    return &(
-        specific_field.field->is_repeated()
-            ? reflection->GetRepeatedMessage(
-                  *message, specific_field.field,
-                  left_side ? specific_field.index : specific_field.new_index)
-            : reflection->GetMessage(*message, specific_field.field));
-  };
 
-  std::unique_ptr<Message> deserialized_msg;  // used for protobuf.Any case
-  std::unique_ptr<DynamicMessageFactory> dynamic_message_factory;
-  const Message* found_message = left_side ? message1_ : message2_;
-  for (size_t j = 0; j <= target_field_index;
-       j++) {  // iterate until we find target field
-    if (specific_field.field->is_repeated()) {
-      int index = left_side ? specific_field.index : specific_field.new_index;
-      if (index < 0) {
-        // Filtered messages fall in this case
-        GOOGLE_LOG(WARNING) << "Invalid index " << index << " for map.\n";
-        found_message = nullptr;
-        break;
-      }
-    }
-    if (found_message->GetTypeName() == "google.protobuf.Any") {
-      if (!unpack_any_field_.UnpackAny(*found_message, &deserialized_msg)) {
-        GOOGLE_LOG(ERROR) << "Cannot print Any message map key due to "
-                      "unpacking error\n";
-        found_message = nullptr;
-        break;
-      }
-
-      found_message =
-          get_target_message(field_path[j], deserialized_msg->GetReflection(),
-                             deserialized_msg.get());
-
-    } else {
-      found_message = get_target_message(
-          field_path[j], found_message->GetReflection(), found_message);
-    }
-  }
-
+  const Message* found_message =
+      left_side ? specific_field.map_entry1 : specific_field.map_entry2;
   std::string key_string = "";
   if (found_message != nullptr) {
     // NB: the map key is always the first field
     const FieldDescriptor* fd = found_message->GetDescriptor()->field(0);
-    if (fd->cpp_type() == FieldDescriptor::CPPTYPE_MESSAGE) {
-      key_string = found_message->GetReflection()
-                       ->GetMessage(*found_message, fd)
-                       .ShortDebugString();
-    } else if (fd->cpp_type() == FieldDescriptor::CPPTYPE_STRING) {
+    if (fd->cpp_type() == FieldDescriptor::CPPTYPE_STRING) {
       // Not using PrintFieldValueToString for strings to avoid extra
       // characters
       key_string = found_message->GetReflection()->GetString(
@@ -2113,7 +2131,7 @@ void MessageDifferencer::StreamReporter::PrintMapKey(
 }
 
 void MessageDifferencer::StreamReporter::ReportAdded(
-    const Message& message1, const Message& message2,
+    const Message& /*message1*/, const Message& message2,
     const std::vector<SpecificField>& field_path) {
   printer_->Print("added: ");
   PrintPath(field_path, false);
@@ -2123,7 +2141,7 @@ void MessageDifferencer::StreamReporter::ReportAdded(
 }
 
 void MessageDifferencer::StreamReporter::ReportDeleted(
-    const Message& message1, const Message& message2,
+    const Message& message1, const Message& /*message2*/,
     const std::vector<SpecificField>& field_path) {
   printer_->Print("deleted: ");
   PrintPath(field_path, true);
@@ -2162,7 +2180,7 @@ void MessageDifferencer::StreamReporter::ReportModified(
 }
 
 void MessageDifferencer::StreamReporter::ReportMoved(
-    const Message& message1, const Message& message2,
+    const Message& message1, const Message& /*message2*/,
     const std::vector<SpecificField>& field_path) {
   printer_->Print("moved: ");
   PrintPath(field_path, true);
@@ -2174,7 +2192,7 @@ void MessageDifferencer::StreamReporter::ReportMoved(
 }
 
 void MessageDifferencer::StreamReporter::ReportMatched(
-    const Message& message1, const Message& message2,
+    const Message& message1, const Message& /*message2*/,
     const std::vector<SpecificField>& field_path) {
   printer_->Print("matched: ");
   PrintPath(field_path, true);
@@ -2188,7 +2206,7 @@ void MessageDifferencer::StreamReporter::ReportMatched(
 }
 
 void MessageDifferencer::StreamReporter::ReportIgnored(
-    const Message& message1, const Message& message2,
+    const Message& /*message1*/, const Message& /*message2*/,
     const std::vector<SpecificField>& field_path) {
   printer_->Print("ignored: ");
   PrintPath(field_path, true);
@@ -2206,7 +2224,7 @@ void MessageDifferencer::StreamReporter::SetMessages(const Message& message1,
 }
 
 void MessageDifferencer::StreamReporter::ReportUnknownFieldIgnored(
-    const Message& message1, const Message& message2,
+    const Message& /*message1*/, const Message& /*message2*/,
     const std::vector<SpecificField>& field_path) {
   printer_->Print("ignored: ");
   PrintPath(field_path, true);

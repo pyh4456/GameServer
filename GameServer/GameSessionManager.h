@@ -13,7 +13,7 @@ public:
 
 private:
 	USE_LOCK;
-	Set<GameSessionRef> _sessions;
+	set<GameSessionRef> _sessions;
 };
 
 extern GameSessionManager GSessionManager;

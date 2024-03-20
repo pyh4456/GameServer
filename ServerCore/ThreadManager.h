@@ -23,7 +23,7 @@ public:
 	static void DistributeReservedJobs();
 
 private:
-	Mutex			_lock;
+	mutex			_lock;
 	vector<thread>	_threads;
 };
 

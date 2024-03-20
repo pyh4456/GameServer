@@ -1,21 +1,13 @@
 ﻿#include "pch.h"
+#include <iostream>
 #include "ThreadManager.h"
 #include "Service.h"
 #include "Session.h"
 #include "GameSession.h"
 #include "GameSessionManager.h"
-#include "BufferWriter.h"
-#include "ClientPacketHandler.h"
+//#include "ClientPacketHandler.h"
 #include <tchar.h>
-#include "Protocol.pb.h"
 #include "Job.h"
-#include "Room.h"
-#include "Player.h"
-#include "DBConnectionPool.h"
-#include "DBBind.h"
-#include "XmlParser.h"
-#include "DBSynchronizer.h"
-#include "GenProcedures.h"
 
 enum
 {
@@ -41,49 +33,12 @@ void DoWorkerJob(ServerServiceRef& service)
 
 int main()
 {
-	GDBConnectionPool->Connect(1, L"Driver={ODBC Driver 17 for SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=ServerDB;Trusted_Connection=Yes;");
+	ServerPacketHandler::Init();
 
-	DBConnection* dbConn = GDBConnectionPool->Pop();
-	DBSynchronizer dbSync(*dbConn);
-	dbSync.Synchronize(L"GameDB.xml");
-
-	{
-		WCHAR name[] = L"wuwal";
-		SP::InsertGold insertGold(*dbConn);
-		insertGold.In_Gold(100);
-		insertGold.In_Name(name);
-		insertGold.In_CreateDate(TIMESTAMP_STRUCT{ 2024, 2, 5 });
-		insertGold.Execute();
-	}
-
-	{
-		SP::GetGold getGold(*dbConn);
-		getGold.In_Gold(100);
-
-		int32 id = 0;
-		int32 gold = 0;
-		WCHAR name[100];
-		TIMESTAMP_STRUCT date;
-
-		getGold.Out_Id(id);
-		getGold.Out_Gold(gold);
-		getGold.Out_Name(name);
-		getGold.Out_CreateDate(date);
-		getGold.Execute();
-
-		while (getGold.Fetch())
-		{
-			GConsoleLogger->WriteStdOut(Color::BLUE,
-				L"ID[%d] Gold[%d] Name[%s]\n", id, gold, name);
-		}
-	}
-
-	ClientPacketHandler::Init();
-
-	ServerServiceRef service = MakeShared<ServerService>(
+	ServerServiceRef service = make_shared<ServerService>(
 		NetAddress(L"127.0.0.1", 7777),
-		MakeShared<IocpCore>(),
-		MakeShared<GameSession>, // TODO : SessionManager 등
+		make_shared<IocpCore>(),
+		[=]() { return make_shared<GameSession>(); }, // TODO : SessionManager 등
 		100);
 
 	ASSERT_CRASH(service->Start());
@@ -97,7 +52,17 @@ int main()
 	}
 
 	// Main Thread
-	DoWorkerJob(service);
+	//DoWorkerJob(service);
+
+	while (true)
+	{
+		Protocol::S_CHAT pkt;
+		pkt.set_msg("Hello World");
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+
+		GSessionManager.Broadcast(sendBuffer);
+		this_thread::sleep_for(1s);
+	}
 
 	GThreadManager->Join();
 }

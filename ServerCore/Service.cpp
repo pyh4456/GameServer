@@ -22,7 +22,7 @@ void Service::CloseService()
 	// TODO
 }
 
-void Service::BroadCast(SendBufferRef sendBuffer)
+void Service::Broadcast(SendBufferRef sendBuffer)
 {
 	WRITE_LOCK;
 	for (const auto& session : _sessions)
@@ -91,7 +91,7 @@ bool ServerService::Start()
 	if (CanStart() == false)
 		return false;
 
-	_listener = MakeShared<Listener>();
+	_listener = make_shared<Listener>();
 	if (_listener == nullptr)
 		return false;
 

@@ -44,10 +44,6 @@
 #endif
 #include <windows.h>
 #define snprintf _snprintf    // see comment in strutil.cc
-#elif defined(HAVE_PTHREAD)
-#include <pthread.h>
-#else
-#error "No suitable threading library available."
 #endif
 #if defined(__ANDROID__)
 #include <android/log.h>
@@ -302,15 +298,15 @@ void DoNothing() {}
 // TODO(xiaofeng): PROTOBUF_LITTLE_ENDIAN is unfortunately defined in
 // google/protobuf/io/coded_stream.h and therefore can not be used here.
 // Maybe move that macro definition here in the future.
-uint32 ghtonl(uint32 x) {
+uint32_t ghtonl(uint32_t x) {
   union {
-    uint32 result;
-    uint8 result_array[4];
+    uint32_t result;
+    uint8_t result_array[4];
   };
-  result_array[0] = static_cast<uint8>(x >> 24);
-  result_array[1] = static_cast<uint8>((x >> 16) & 0xFF);
-  result_array[2] = static_cast<uint8>((x >> 8) & 0xFF);
-  result_array[3] = static_cast<uint8>(x & 0xFF);
+  result_array[0] = static_cast<uint8_t>(x >> 24);
+  result_array[1] = static_cast<uint8_t>((x >> 16) & 0xFF);
+  result_array[2] = static_cast<uint8_t>((x >> 8) & 0xFF);
+  result_array[3] = static_cast<uint8_t>(x & 0xFF);
   return result;
 }
 

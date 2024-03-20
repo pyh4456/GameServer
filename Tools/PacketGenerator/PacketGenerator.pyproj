@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>6640ab59-0719-4713-befd-975f143c8077</ProjectGuid>
+    <ProjectGuid>2dcd6df2-6f34-4fc1-9bfe-327f851360cb</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>PacketGenerator.py</StartupFile>
     <SearchPath>

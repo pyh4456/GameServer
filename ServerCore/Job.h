@@ -1,9 +1,9 @@
 #pragma once
 #include <functional>
 
-/*--------------
+/*---------
 	Job
-----------------*/
+----------*/
 
 using CallbackType = std::function<void()>;
 

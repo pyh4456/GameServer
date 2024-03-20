@@ -2,28 +2,28 @@
 #include "JobTimer.h"
 #include "JobQueue.h"
 
-
-/*----------------
+/*--------------
 	JobTimer
-------------------*/
+---------------*/
 
 void JobTimer::Reserve(uint64 tickAfter, weak_ptr<JobQueue> owner, JobRef job)
 {
 	const uint64 executeTick = ::GetTickCount64() + tickAfter;
-	JobData* jobData = ObjectPool<JobData>::Pop(owner, job);
+	JobData* jobData = new JobData(owner, job);
 
 	WRITE_LOCK;
 
-	_items.push(TimerItem{executeTick, jobData});
+	_items.push(TimerItem{ executeTick, jobData });
 }
 
 void JobTimer::Distribute(uint64 now)
 {
-	// 한 번에 하나의 스레드만 통과
+	// 한 번에 1 쓰레드만 통과
 	if (_distributing.exchange(true) == true)
 		return;
 
-	Vector<TimerItem> items;
+	vector<TimerItem> items;
+
 	{
 		WRITE_LOCK;
 
@@ -43,10 +43,10 @@ void JobTimer::Distribute(uint64 now)
 		if (JobQueueRef owner = item.jobData->owner.lock())
 			owner->Push(item.jobData->job);
 
-		ObjectPool<JobData>::Push(item.jobData);
+		delete item.jobData;		
 	}
 
-	// 끝나면 풀어준다
+	// 끝났으면 풀어준다
 	_distributing.store(false);
 }
 
@@ -57,7 +57,7 @@ void JobTimer::Clear()
 	while (_items.empty() == false)
 	{
 		const TimerItem& timerItem = _items.top();
-		ObjectPool<JobData>::Push(timerItem.jobData);
+		delete timerItem.jobData;
 		_items.pop();
 	}
 }

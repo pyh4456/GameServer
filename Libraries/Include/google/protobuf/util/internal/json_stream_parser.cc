@@ -343,16 +343,16 @@ util::Status JsonStreamParser::ParseValue(TokenType type) {
     case UNKNOWN:
       return ReportUnknown("Expected a value.", ParseErrorType::EXPECTED_VALUE);
     default: {
-      if (allow_empty_null_ && IsEmptyNullAllowed(type)) {
-        return ParseEmptyNull();
-      }
-
       // Special case for having been cut off while parsing, wait for more data.
       // This handles things like 'fals' being at the end of the string, we
       // don't know if the next char would be e, completing it, or something
       // else, making it invalid.
       if (!finishing_ && p_.length() < kKeywordFalse.length()) {
         return util::CancelledError("");
+      }
+
+      if (allow_empty_null_ && IsEmptyNullAllowed(type)) {
+        return ParseEmptyNull();
       }
       return ReportFailure("Unexpected token.",
                            ParseErrorType::UNEXPECTED_TOKEN);
@@ -485,7 +485,7 @@ util::Status JsonStreamParser::ParseUnicodeEscape() {
   }
   GOOGLE_DCHECK_EQ('\\', p_.data()[0]);
   GOOGLE_DCHECK_EQ('u', p_.data()[1]);
-  uint32 code = 0;
+  uint32_t code = 0;
   for (int i = 2; i < kUnicodeEscapedLength; ++i) {
     if (!isxdigit(p_.data()[i])) {
       return ReportFailure("Invalid escape sequence.",
@@ -505,7 +505,7 @@ util::Status JsonStreamParser::ParseUnicodeEscape() {
       }
     } else if (p_.data()[kUnicodeEscapedLength] == '\\' &&
                p_.data()[kUnicodeEscapedLength + 1] == 'u') {
-      uint32 low_code = 0;
+      uint32_t low_code = 0;
       for (int i = kUnicodeEscapedLength + 2; i < 2 * kUnicodeEscapedLength;
            ++i) {
         if (!isxdigit(p_.data()[i])) {
@@ -626,7 +626,7 @@ util::Status JsonStreamParser::ParseNumberHelper(NumberResult* result) {
     return status;
   }
 
-  // Positive non-floating point number, parse as a uint64.
+  // Positive non-floating point number, parse as a uint64_t.
   if (!negative) {
     // Octal/Hex numbers are not valid JSON values.
     if (number.length() >= 2 && number[0] == '0') {
@@ -654,7 +654,7 @@ util::Status JsonStreamParser::ParseNumberHelper(NumberResult* result) {
         "Octal/hex numbers are not valid JSON values.",
         ParseErrorType::OCTAL_OR_HEX_ARE_NOT_VALID_JSON_VALUES);
   }
-  // Negative non-floating point number, parse as an int64.
+  // Negative non-floating point number, parse as an int64_t.
   if (safe_strto64(number, &result->int_val)) {
     result->type = NumberResult::INT;
     p_.remove_prefix(index);
@@ -864,6 +864,7 @@ bool JsonStreamParser::IsEmptyNullAllowed(TokenType type) {
 
 util::Status JsonStreamParser::ReportFailure(StringPiece message,
                                              ParseErrorType parse_code) {
+  (void)parse_code;  // Parameter is used in Google-internal code.
   static const int kContextLength = 20;
   const char* p_start = p_.data();
   const char* json_start = json_.data();
