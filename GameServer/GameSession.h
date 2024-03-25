@@ -1,6 +1,11 @@
 #pragma once
 #include "Session.h"
 
+class Player;
+
+using PlayerRef = shared_ptr<Player>;
+
+
 class GameSession : public PacketSession
 {
 public:
@@ -15,5 +20,5 @@ public:
 	virtual void OnSend(int32 len) override;
 
 public:
-	weak_ptr<class Room> _room;
+	atomic<PlayerRef> player;
 };
