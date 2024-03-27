@@ -36,7 +36,7 @@ message S_LEAVE_GAME
 
 message S_SPAWN
 {
-	repeated PlayerInfo player = 1;
+	repeated PlayerInfo players = 1;
 }
 
 message S_DESPAWN
