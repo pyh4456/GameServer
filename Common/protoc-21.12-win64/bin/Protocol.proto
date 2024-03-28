@@ -4,7 +4,6 @@ package Protocol;
 import "Enum.proto";
 import "Struct.proto";
 
-
 message C_LOGIN
 {
 }

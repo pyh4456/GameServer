@@ -6,9 +6,11 @@ public:
 	virtual ~Room();
 
 	bool HandleEnterPlayerLocked(PlayerRef player);
+	bool HandleLeavePlayerLocked(PlayerRef player);
 
 private:
 	bool EnterPlayer(PlayerRef player);
+	bool LeavePlayer(uint64 objectId);
 
 	USE_LOCK;
 

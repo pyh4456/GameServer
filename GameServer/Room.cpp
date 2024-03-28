@@ -66,6 +66,40 @@ bool Room::HandleEnterPlayerLocked(PlayerRef player)
 	return success;
 }
 
+bool Room::HandleLeavePlayerLocked(PlayerRef player)
+{
+	if (player == nullptr)
+		return false;
+
+	WRITE_LOCK;
+
+	const uint64 objectId = player->playerInfo->object_id();
+	bool success = LeavePlayer(objectId);
+
+	// 퇴장 사실을 해당 플레이어에게 알린다.
+	{
+		Protocol::S_LEAVE_GAME leaveGamePkt;
+
+		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(leaveGamePkt);
+		if (auto session = player->session.lock())
+			session->Send(sendBuffer);
+	}
+
+	// 퇴장 사실을 다른 플레이어에게 알린다.
+	{
+		Protocol::S_DESPAWN despqwnPkt;
+		despqwnPkt.add_object_ids(objectId);
+
+		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(despqwnPkt);
+		Broadcast(sendBuffer, objectId);
+
+		if (auto session = player->session.lock())
+			session->Send(sendBuffer);
+	}
+
+	return success;
+}
+
 bool Room::EnterPlayer(PlayerRef player)
 {
 	// 이미 플레이어가 있다.
@@ -75,6 +109,19 @@ bool Room::EnterPlayer(PlayerRef player)
 	_players.insert(make_pair(player->playerInfo->object_id(), player));
 
 	player->room.store(shared_from_this());
+
+	return true;
+}
+
+bool Room::LeavePlayer(uint64 objectId)
+{
+	if (_players.find(objectId) == _players.end())
+		return false;
+
+	PlayerRef player = _players[objectId];
+	player->room.store(weak_ptr<Room>());
+
+	_players.erase(objectId);
 
 	return true;
 }
