@@ -43,6 +43,16 @@ message S_DESPAWN
 	repeated uint64 object_ids = 1;
 }
 
+message C_MOVE
+{
+	PlayerInfo Info = 1;
+}
+
+message S_MOVE
+{
+	PlayerInfo Info = 1;
+}
+
 message C_CHAT
 {
 	string msg = 1;
