@@ -49,15 +49,15 @@ namespace Protocol {
 
 enum PlayerType : int {
   PLAYER_TYPE_NONE = 0,
-  PLAYER_TYPE_KNIGHT = 1,
-  PLAYER_TYPE_MAGE = 2,
-  PLAYER_TYPE_ARCHER = 3,
+  PLAYER_TYPE_YOSHIKA = 1,
+  PLAYER_TYPE_LYNETTE = 2,
+  PLAYER_TYPE_SANYA = 3,
   PlayerType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   PlayerType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool PlayerType_IsValid(int value);
 constexpr PlayerType PlayerType_MIN = PLAYER_TYPE_NONE;
-constexpr PlayerType PlayerType_MAX = PLAYER_TYPE_ARCHER;
+constexpr PlayerType PlayerType_MAX = PLAYER_TYPE_SANYA;
 constexpr int PlayerType_ARRAYSIZE = PlayerType_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PlayerType_descriptor();

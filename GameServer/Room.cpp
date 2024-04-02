@@ -24,6 +24,7 @@ bool Room::HandleEnterPlayerLocked(PlayerRef player)
 	player->playerInfo->set_z(100.f);
 	player->playerInfo->set_yaw(Utils::GetRandom(0.f, 100.f));
 
+
 	// 입장 사실을 신입 플레이어에게 알린다.
 	{
 		Protocol::S_ENTER_GAME enterGamePkt;

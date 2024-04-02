@@ -183,6 +183,7 @@ class PlayerInfo final :
     kYFieldNumber = 3,
     kZFieldNumber = 4,
     kYawFieldNumber = 5,
+    kTypeFieldNumber = 6,
   };
   // uint64 object_id = 1;
   void clear_object_id();
@@ -229,6 +230,15 @@ class PlayerInfo final :
   void _internal_set_yaw(float value);
   public:
 
+  // .Protocol.PlayerType type = 6;
+  void clear_type();
+  ::Protocol::PlayerType type() const;
+  void set_type(::Protocol::PlayerType value);
+  private:
+  ::Protocol::PlayerType _internal_type() const;
+  void _internal_set_type(::Protocol::PlayerType value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.PlayerInfo)
  private:
   class _Internal;
@@ -242,6 +252,7 @@ class PlayerInfo final :
     float y_;
     float z_;
     float yaw_;
+    int type_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -356,6 +367,26 @@ inline void PlayerInfo::_internal_set_yaw(float value) {
 inline void PlayerInfo::set_yaw(float value) {
   _internal_set_yaw(value);
   // @@protoc_insertion_point(field_set:Protocol.PlayerInfo.yaw)
+}
+
+// .Protocol.PlayerType type = 6;
+inline void PlayerInfo::clear_type() {
+  _impl_.type_ = 0;
+}
+inline ::Protocol::PlayerType PlayerInfo::_internal_type() const {
+  return static_cast< ::Protocol::PlayerType >(_impl_.type_);
+}
+inline ::Protocol::PlayerType PlayerInfo::type() const {
+  // @@protoc_insertion_point(field_get:Protocol.PlayerInfo.type)
+  return _internal_type();
+}
+inline void PlayerInfo::_internal_set_type(::Protocol::PlayerType value) {
+  
+  _impl_.type_ = value;
+}
+inline void PlayerInfo::set_type(::Protocol::PlayerType value) {
+  _internal_set_type(value);
+  // @@protoc_insertion_point(field_set:Protocol.PlayerInfo.type)
 }
 
 #ifdef __GNUC__

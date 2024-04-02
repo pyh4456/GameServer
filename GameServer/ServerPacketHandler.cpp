@@ -20,13 +20,14 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 	// TODO : DB에서 Account 정보를 긁어온다.
 	Protocol::S_LOGIN loginPkt;
 
-	for (int32 i = 0; i < 3; i++)
+	for (int32 i = 0; i < 2; i++)
 	{
 		Protocol::PlayerInfo* player = loginPkt.add_players();
 		player->set_x(Utils::GetRandom(0.f, 100.f));
 		player->set_y(Utils::GetRandom(0.f, 100.f));
 		player->set_z(Utils::GetRandom(0.f, 100.f));
 		player->set_yaw(Utils::GetRandom(0.f, 45.f));
+		player->set_type(Protocol::PlayerType(i + 1));
 	}
 
 	loginPkt.set_success(true);	
@@ -40,6 +41,20 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 {
 	// 플레이어 생성
 	PlayerRef player = ObjectUtils::CreatePlayer(static_pointer_cast<GameSession>(session));
+
+	// TEMP : 플레이어가 선택한 index에 맞는 캐릭터 정보 불러오기 
+	switch (pkt.playerindex())
+	{
+	case 1:
+		player->playerInfo->set_type(Protocol::PLAYER_TYPE_YOSHIKA);
+		break;
+	case 2:
+		player->playerInfo->set_type(Protocol::PLAYER_TYPE_LYNETTE);
+		break;
+	case 3:
+		player->playerInfo->set_type(Protocol::PLAYER_TYPE_SANYA);
+		break;
+	}
 
 	// 방 입장
 	GRoom->HandleEnterPlayerLocked(player);
