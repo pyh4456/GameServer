@@ -27,7 +27,7 @@ void JobQueue::Push(JobRef job, bool pushOnly)
 	}
 }
 
-// 1) 일감이 너~무 몰리면?
+// 1) 일감이 너무 몰렸을 경우
 void JobQueue::Execute()
 {
 	LCurrentJobQueue = this;

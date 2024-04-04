@@ -18,6 +18,7 @@ bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)
 bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 {
 	// TODO : DB에서 Account 정보를 긁어온다.
+
 	Protocol::S_LOGIN loginPkt;
 
 	for (int32 i = 0; i < 2; i++)
@@ -57,7 +58,8 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 	}
 
 	// 방 입장
-	GRoom->HandleEnterPlayerLocked(player);
+	GRoom->DoAsync(&Room::HandleEnterPlayer, player);
+	//GRoom->HandleEnterPlayer(player);
 
 	return true;
 }
@@ -74,7 +76,8 @@ bool Handle_C_LEAVE_GAME(PacketSessionRef& session, Protocol::C_LEAVE_GAME& pkt)
 	if (room == nullptr)
 		return false;
 
-	room->HandleLeavePlayerLocked(player);
+	GRoom->DoAsync(&Room::HandleLeavePlayer, player);
+	//room->HandleLeavePlayer(player);
 
 	return true;
 }
@@ -91,7 +94,8 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 	if (room == nullptr)
 		return false;
 
-	room->HandleMoveLocked(pkt);
+	GRoom->DoAsync(&Room::HandleMove, pkt);
+	//room->HandleMove(pkt);
 
 	return true;
 }

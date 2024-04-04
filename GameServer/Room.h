@@ -1,19 +1,23 @@
 #pragma once
-class Room : public enable_shared_from_this<Room>
+#include "JobQueue.h"
+
+class Room : public JobQueue
 {
 public:
 	Room();
 	virtual ~Room();
 
-	bool HandleEnterPlayerLocked(PlayerRef player);
-	bool HandleLeavePlayerLocked(PlayerRef player);
-	void HandleMoveLocked(Protocol::C_MOVE& pkt);
+	bool HandleEnterPlayer(PlayerRef player);
+	bool HandleLeavePlayer(PlayerRef player);
+	void HandleMove(Protocol::C_MOVE pkt);
+
+	void Update() {};
+
+	RoomRef GetRoomRef();
 
 private:
 	bool EnterPlayer(PlayerRef player);
 	bool LeavePlayer(uint64 objectId);
-
-	USE_LOCK;
 
 private:
 	void Broadcast(SendBufferRef sendBuffer, uint64 exceptId = 0);
