@@ -13,17 +13,19 @@ Room::~Room()
 {
 }
 
-bool Room::HandleEnterPlayer(PlayerRef player)
+bool Room::EnterRoom(ObjectRef object, bool randPos)
 {
-	bool success = AddObject(player);
+	bool success = AddObject(object);
 
-	player->posInfo->set_x(Utils::GetRandom(0.f, 500.f));
-	player->posInfo->set_y(Utils::GetRandom(0.f, 500.f));
-	player->posInfo->set_z(100.f);
-	player->posInfo->set_yaw(Utils::GetRandom(0.f, 100.f));
-
+	if (randPos) {
+		object->posInfo->set_x(Utils::GetRandom(0.f, 500.f));
+		object->posInfo->set_y(Utils::GetRandom(0.f, 500.f));
+		object->posInfo->set_z(100.f);
+		object->posInfo->set_yaw(Utils::GetRandom(0.f, 100.f));
+	}
 
 	// 입장 사실을 신입 플레이어에게 알린다.
+	if (auto player = dynamic_pointer_cast<Player>(object))
 	{
 		Protocol::S_ENTER_GAME enterGamePkt;
 		enterGamePkt.set_success(success);
@@ -36,18 +38,20 @@ bool Room::HandleEnterPlayer(PlayerRef player)
 		if (auto session = player->session.lock())
 			session->Send(sendBuffer);
 	}
+
 	// 입장 사실을 다른 플레이어에게 알린다.
 	{
 		Protocol::S_SPAWN spawnPkt;
 
-		Protocol::ObjectInfo* playerInfo = spawnPkt.add_players();
-		playerInfo->CopyFrom(*player->objectInfo);
+		Protocol::ObjectInfo* objectInfo = spawnPkt.add_players();
+		objectInfo->CopyFrom(*object->objectInfo);
 
 		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(spawnPkt);
-		Broadcast(sendBuffer, player->objectInfo->object_id());
+		Broadcast(sendBuffer, object->objectInfo->object_id());
 	}
 
 	//기존에 입장한 플레이어 목록을 플레이어에게 전송한다.
+	if (auto player = dynamic_pointer_cast<Player>(object))
 	{
 		Protocol::S_SPAWN spawnPkt;
 
@@ -68,16 +72,17 @@ bool Room::HandleEnterPlayer(PlayerRef player)
 	return success;
 }
 
-bool Room::HandleLeavePlayer(PlayerRef player)
+bool Room::LeaveRoom(ObjectRef object)
 {
-	if (player == nullptr)
+	if (object == nullptr)
 		return false;
 
 
-	const uint64 objectId = player->objectInfo->object_id();
+	const uint64 objectId = object->objectInfo->object_id();
 	bool success = RemoveObject(objectId);
 
 	// 퇴장 사실을 해당 플레이어에게 알린다.
+	if (auto player = dynamic_pointer_cast<Player>(object))
 	{
 		Protocol::S_LEAVE_GAME leaveGamePkt;
 
@@ -94,11 +99,22 @@ bool Room::HandleLeavePlayer(PlayerRef player)
 		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(despqwnPkt);
 		Broadcast(sendBuffer, objectId);
 
-		if (auto session = player->session.lock())
-			session->Send(sendBuffer);
+		if (auto player = dynamic_pointer_cast<Player>(object))
+			if (auto session = player->session.lock())
+				session->Send(sendBuffer);
 	}
 
 	return success;
+}
+
+bool Room::HandleEnterPlayer(PlayerRef player)
+{
+	return EnterRoom(player, true);
+}
+
+bool Room::HandleLeavePlayer(PlayerRef player)
+{
+	return LeaveRoom(player);
 }
 
 void Room::HandleMove(Protocol::C_MOVE pkt)
