@@ -3,10 +3,10 @@
 
 Player::Player()
 {
-	playerInfo = new Protocol::PlayerInfo();
+	objectInfo->set_object_type(Protocol::ObjectType::OBJECT_TYPE_PLAYER);
+	_isPlayer = true;
 }
 
 Player::~Player()
 {
-	delete playerInfo;
 }

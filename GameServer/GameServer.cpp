@@ -56,6 +56,8 @@ int main()
 	// Main Thread
 	//DoWorkerJob(service);
 
+	GRoom->DoAsync(&Room::UpdateTick);
+
 	while (true)
 	{
 		/*Protocol::S_CHAT pkt;

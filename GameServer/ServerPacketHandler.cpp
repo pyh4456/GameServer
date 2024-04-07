@@ -23,12 +23,13 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 
 	for (int32 i = 0; i < 2; i++)
 	{
-		Protocol::PlayerInfo* player = loginPkt.add_players();
-		player->set_x(Utils::GetRandom(0.f, 100.f));
-		player->set_y(Utils::GetRandom(0.f, 100.f));
-		player->set_z(Utils::GetRandom(0.f, 100.f));
-		player->set_yaw(Utils::GetRandom(0.f, 45.f));
-		player->set_type(Protocol::PlayerType(i + 1));
+		Protocol::ObjectInfo* player = loginPkt.add_players();
+		Protocol::PosInfo* posInfo = player->mutable_pos_info();
+		posInfo->set_x(Utils::GetRandom(0.f, 100.f));
+		posInfo->set_y(Utils::GetRandom(0.f, 100.f));
+		posInfo->set_z(Utils::GetRandom(0.f, 100.f));
+		posInfo->set_yaw(Utils::GetRandom(0.f, 45.f));
+		player->set_player_type(Protocol::PlayerType(i + 1));
 	}
 
 	loginPkt.set_success(true);	
@@ -47,13 +48,13 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 	switch (pkt.playerindex())
 	{
 	case 1:
-		player->playerInfo->set_type(Protocol::PLAYER_TYPE_YOSHIKA);
+		player->objectInfo->set_player_type(Protocol::PLAYER_TYPE_YOSHIKA);
 		break;
 	case 2:
-		player->playerInfo->set_type(Protocol::PLAYER_TYPE_LYNETTE);
+		player->objectInfo->set_player_type(Protocol::PLAYER_TYPE_LYNETTE);
 		break;
 	case 3:
-		player->playerInfo->set_type(Protocol::PLAYER_TYPE_SANYA);
+		player->objectInfo->set_player_type(Protocol::PLAYER_TYPE_SANYA);
 		break;
 	}
 
