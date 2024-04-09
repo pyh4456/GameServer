@@ -130,6 +130,33 @@ inline bool MoveState_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<MoveState>(
     MoveState_descriptor(), name, value);
 }
+enum ProjectileType : int {
+  PROJECTILE_TYPE_NONE = 0,
+  PROJECTILE_TYPE_YOSHIKA = 1,
+  PROJECTILE_TYPE_LYNETTE = 2,
+  PROJECTILE_TYPE_SANYA = 3,
+  ProjectileType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  ProjectileType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool ProjectileType_IsValid(int value);
+constexpr ProjectileType ProjectileType_MIN = PROJECTILE_TYPE_NONE;
+constexpr ProjectileType ProjectileType_MAX = PROJECTILE_TYPE_SANYA;
+constexpr int ProjectileType_ARRAYSIZE = ProjectileType_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ProjectileType_descriptor();
+template<typename T>
+inline const std::string& ProjectileType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, ProjectileType>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function ProjectileType_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    ProjectileType_descriptor(), enum_t_value);
+}
+inline bool ProjectileType_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ProjectileType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ProjectileType>(
+    ProjectileType_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -166,6 +193,11 @@ template <> struct is_proto_enum< ::Protocol::MoveState> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::MoveState>() {
   return ::Protocol::MoveState_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::ProjectileType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::ProjectileType>() {
+  return ::Protocol::ProjectileType_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

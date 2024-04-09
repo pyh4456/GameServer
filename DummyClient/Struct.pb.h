@@ -187,7 +187,8 @@ class PosInfo final :
     kYFieldNumber = 3,
     kZFieldNumber = 4,
     kYawFieldNumber = 5,
-    kStateFieldNumber = 6,
+    kPitchFieldNumber = 6,
+    kStateFieldNumber = 7,
   };
   // uint64 object_id = 1;
   void clear_object_id();
@@ -234,7 +235,16 @@ class PosInfo final :
   void _internal_set_yaw(float value);
   public:
 
-  // .Protocol.MoveState state = 6;
+  // float pitch = 6;
+  void clear_pitch();
+  float pitch() const;
+  void set_pitch(float value);
+  private:
+  float _internal_pitch() const;
+  void _internal_set_pitch(float value);
+  public:
+
+  // .Protocol.MoveState state = 7;
   void clear_state();
   ::Protocol::MoveState state() const;
   void set_state(::Protocol::MoveState value);
@@ -256,6 +266,7 @@ class PosInfo final :
     float y_;
     float z_;
     float yaw_;
+    float pitch_;
     int state_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -389,6 +400,7 @@ class ObjectInfo final :
     kObjectIdFieldNumber = 1,
     kObjectTypeFieldNumber = 2,
     kPlayerTypeFieldNumber = 4,
+    kProjectileTypeFieldNumber = 5,
   };
   // .Protocol.PosInfo pos_info = 3;
   bool has_pos_info() const;
@@ -435,6 +447,15 @@ class ObjectInfo final :
   void _internal_set_player_type(::Protocol::PlayerType value);
   public:
 
+  // .Protocol.ProjectileType projectile_type = 5;
+  void clear_projectile_type();
+  ::Protocol::ProjectileType projectile_type() const;
+  void set_projectile_type(::Protocol::ProjectileType value);
+  private:
+  ::Protocol::ProjectileType _internal_projectile_type() const;
+  void _internal_set_projectile_type(::Protocol::ProjectileType value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.ObjectInfo)
  private:
   class _Internal;
@@ -447,6 +468,7 @@ class ObjectInfo final :
     uint64_t object_id_;
     int object_type_;
     int player_type_;
+    int projectile_type_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -563,7 +585,27 @@ inline void PosInfo::set_yaw(float value) {
   // @@protoc_insertion_point(field_set:Protocol.PosInfo.yaw)
 }
 
-// .Protocol.MoveState state = 6;
+// float pitch = 6;
+inline void PosInfo::clear_pitch() {
+  _impl_.pitch_ = 0;
+}
+inline float PosInfo::_internal_pitch() const {
+  return _impl_.pitch_;
+}
+inline float PosInfo::pitch() const {
+  // @@protoc_insertion_point(field_get:Protocol.PosInfo.pitch)
+  return _internal_pitch();
+}
+inline void PosInfo::_internal_set_pitch(float value) {
+  
+  _impl_.pitch_ = value;
+}
+inline void PosInfo::set_pitch(float value) {
+  _internal_set_pitch(value);
+  // @@protoc_insertion_point(field_set:Protocol.PosInfo.pitch)
+}
+
+// .Protocol.MoveState state = 7;
 inline void PosInfo::clear_state() {
   _impl_.state_ = 0;
 }
@@ -735,6 +777,26 @@ inline void ObjectInfo::_internal_set_player_type(::Protocol::PlayerType value) 
 inline void ObjectInfo::set_player_type(::Protocol::PlayerType value) {
   _internal_set_player_type(value);
   // @@protoc_insertion_point(field_set:Protocol.ObjectInfo.player_type)
+}
+
+// .Protocol.ProjectileType projectile_type = 5;
+inline void ObjectInfo::clear_projectile_type() {
+  _impl_.projectile_type_ = 0;
+}
+inline ::Protocol::ProjectileType ObjectInfo::_internal_projectile_type() const {
+  return static_cast< ::Protocol::ProjectileType >(_impl_.projectile_type_);
+}
+inline ::Protocol::ProjectileType ObjectInfo::projectile_type() const {
+  // @@protoc_insertion_point(field_get:Protocol.ObjectInfo.projectile_type)
+  return _internal_projectile_type();
+}
+inline void ObjectInfo::_internal_set_projectile_type(::Protocol::ProjectileType value) {
+  
+  _impl_.projectile_type_ = value;
+}
+inline void ObjectInfo::set_projectile_type(::Protocol::ProjectileType value) {
+  _internal_set_projectile_type(value);
+  // @@protoc_insertion_point(field_set:Protocol.ObjectInfo.projectile_type)
 }
 
 #ifdef __GNUC__

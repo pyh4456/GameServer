@@ -6,6 +6,8 @@ import "Struct.proto";
 
 message C_LOGIN
 {
+	string id = 1;
+	string password = 2;
 }
 
 message S_LOGIN
@@ -35,7 +37,7 @@ message S_LEAVE_GAME
 
 message S_SPAWN
 {
-	repeated ObjectInfo players = 1;
+	repeated ObjectInfo objects = 1;
 }
 
 message S_DESPAWN

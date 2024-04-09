@@ -97,7 +97,7 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 
 	GRoom->DoAsync(&Room::HandleMove, pkt);
 	//room->HandleMove(pkt);
-
+	
 	return true;
 }
 

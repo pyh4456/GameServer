@@ -10,7 +10,8 @@ message PosInfo
 	float y = 3;
 	float z = 4;
 	float yaw = 5;
-	MoveState state = 6;
+	float pitch = 6;
+	MoveState state = 7;
 }
 
 message ObjectInfo
@@ -19,4 +20,5 @@ message ObjectInfo
 	ObjectType object_type = 2;
 	PosInfo pos_info = 3;
 	PlayerType player_type = 4;
+	ProjectileType projectile_type = 5;
 }
