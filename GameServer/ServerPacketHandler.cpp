@@ -19,9 +19,12 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 {
 	// TODO : DB에서 Account 정보를 긁어온다.
 
+	cout << "Log in ID : " << pkt.id() << endl;
+	cout << "Log in Password : " << pkt.password() << endl;
+
 	Protocol::S_LOGIN loginPkt;
 
-	for (int32 i = 0; i < 2; i++)
+	for (int32 i = 0; i < 3; i++)
 	{
 		Protocol::ObjectInfo* player = loginPkt.add_players();
 		Protocol::PosInfo* posInfo = player->mutable_pos_info();
@@ -29,7 +32,24 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 		posInfo->set_y(Utils::GetRandom(0.f, 100.f));
 		posInfo->set_z(Utils::GetRandom(0.f, 100.f));
 		posInfo->set_yaw(Utils::GetRandom(0.f, 45.f));
-		player->set_player_type(Protocol::PlayerType(i + 1));
+
+		Protocol::CharacterInfo* character = player->mutable_player_info();
+		character->set_score(100 * (1 + i));
+		if (i == 0)
+		{
+			character->set_name(pkt.id() + "_Yoshika");
+			player->set_player_type(Protocol::PLAYER_TYPE_YOSHIKA);
+		}
+		else if (i == 1)
+		{
+			character->set_name(pkt.id() + "_Lynette");
+			player->set_player_type(Protocol::PLAYER_TYPE_LYNETTE);
+		}
+		else if (i == 2)
+		{
+			character->set_name(pkt.id() + "_Sanya");
+			player->set_player_type(Protocol::PLAYER_TYPE_SANYA);
+		}
 	}
 
 	loginPkt.set_success(true);	
@@ -45,7 +65,7 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 	PlayerRef player = ObjectUtils::CreatePlayer(static_pointer_cast<GameSession>(session));
 
 	// TEMP : 플레이어가 선택한 index에 맞는 캐릭터 정보 불러오기 
-	switch (pkt.playerindex())
+	switch (pkt.selectedcharacter().player_type())
 	{
 	case 1:
 		player->objectInfo->set_player_type(Protocol::PLAYER_TYPE_YOSHIKA);
@@ -57,6 +77,9 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 		player->objectInfo->set_player_type(Protocol::PLAYER_TYPE_SANYA);
 		break;
 	}
+
+	player->objectInfo->mutable_player_info()->set_name(pkt.selectedcharacter().player_info().name());
+	player->objectInfo->mutable_player_info()->set_score(pkt.selectedcharacter().player_info().score());
 
 	// 방 입장
 	GRoom->DoAsync(&Room::HandleEnterPlayer, player);

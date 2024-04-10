@@ -18,7 +18,7 @@ message S_LOGIN
 
 message C_ENTER_GAME
 {
-	uint64 playerIndex = 1;
+	ObjectInfo SelectedCharacter = 1;
 }
 
 message S_ENTER_GAME
@@ -58,6 +58,11 @@ message S_MOVE
 message C_CHAT
 {
 	string msg = 1;
+}
+
+message S_SHOOT
+{
+
 }
 
 message S_CHAT

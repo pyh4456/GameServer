@@ -21,7 +21,8 @@ enum : uint16
 	PKT_C_MOVE = 1008,
 	PKT_S_MOVE = 1009,
 	PKT_C_CHAT = 1010,
-	PKT_S_CHAT = 1011,
+	PKT_S_SHOOT = 1011,
+	PKT_S_CHAT = 1012,
 };
 
 // Custom Handlers
@@ -57,6 +58,7 @@ public:
 	static SendBufferRef MakeSendBuffer(Protocol::S_SPAWN& pkt) { return MakeSendBuffer(pkt, PKT_S_SPAWN); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_DESPAWN& pkt) { return MakeSendBuffer(pkt, PKT_S_DESPAWN); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_MOVE& pkt) { return MakeSendBuffer(pkt, PKT_S_MOVE); }
+	static SendBufferRef MakeSendBuffer(Protocol::S_SHOOT& pkt) { return MakeSendBuffer(pkt, PKT_S_SHOOT); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_S_CHAT); }
 
 private:

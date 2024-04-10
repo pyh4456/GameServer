@@ -14,11 +14,19 @@ message PosInfo
 	MoveState state = 7;
 }
 
+message CharacterInfo
+{
+	uint64 score = 1;
+	string name = 2;
+}
+
 message ObjectInfo
 {
 	uint64 object_id = 1;
 	ObjectType object_type = 2;
 	PosInfo pos_info = 3;
 	PlayerType player_type = 4;
-	ProjectileType projectile_type = 5;
+	CharacterInfo player_info = 5;
+	ProjectileType projectile_type = 6;
 }
+
