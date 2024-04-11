@@ -97,7 +97,14 @@ bool Room::LeaveRoom(ObjectRef object)
 	// 퇴장 사실을 다른 플레이어에게 알린다.
 	{
 		Protocol::S_DESPAWN despqwnPkt;
-		despqwnPkt.add_object_ids(objectId);
+
+		Protocol::ObjectInfo* objectInfo = despqwnPkt.add_objects();
+		objectInfo->CopyFrom(*object->objectInfo);
+
+		//Protocol::ObjectInfo* objectInfo = new Protocol::ObjectInfo();
+		//objectInfo->set_object_id(objectId);
+		//objectInfo->set_object_type(object->objectInfo->object_type());
+		//objectInfo = despqwnPkt.add_objects();
 
 		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(despqwnPkt);
 		Broadcast(sendBuffer, objectId);
@@ -140,6 +147,32 @@ void Room::HandleMove(Protocol::C_MOVE pkt)
 	}
 }
 
+void Room::HandleScore(Protocol::C_SCORE pkt)
+{
+	const uint64 playerId = pkt.player_id();
+	if (_objects.find(playerId) == _objects.end())
+		return;
+
+	const uint64 monsterId = pkt.monster_id();
+	if (_objects.find(monsterId) == _objects.end())
+		return;
+
+	{
+		MonsterRef monster = dynamic_pointer_cast<Monster>(_objects[monsterId]);
+		LeaveRoom(monster);
+		Protocol::S_SCORE scorePkt;
+		{
+			scorePkt.set_score_decision(true);
+			scorePkt.set_point(monster->score);
+		}
+		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(scorePkt);
+		PlayerRef player = dynamic_pointer_cast<Player>(_objects[playerId]);
+
+		if (auto session = player->session.lock())
+			session->Send(sendBuffer);
+	}
+}
+
 void Room::SpawnEnemy()
 {
 	while (_numOfEnemy < MAX_NUM_OF_ENEMY)
@@ -149,6 +182,7 @@ void Room::SpawnEnemy()
 		enemy->posInfo->set_y(Utils::GetRandom(0.f, 1000.f));
 		enemy->posInfo->set_z(100.f);
 		enemy->posInfo->set_yaw(Utils::GetRandom(0.f, 100.f));
+		enemy->score = 100;
 
 		EnterRoom(enemy, false);
 
@@ -188,8 +222,11 @@ bool Room::RemoveObject(uint64 objectId)
 	if (_objects.find(objectId) == _objects.end())
 		return false;
 
-	ObjectRef player = _objects[objectId];
-	player->room.store(weak_ptr<Room>());
+	ObjectRef object = _objects[objectId];
+	if (object->objectInfo->object_type() == Protocol::OBJECT_TYPE_ENEMY)
+		_numOfEnemy--;
+
+	object->room.store(weak_ptr<Room>());
 
 	_objects.erase(objectId);
 

@@ -145,5 +145,17 @@ bool Handle_C_REMOVE_BULLET(PacketSessionRef& session, Protocol::C_REMOVE_BULLET
 
 bool Handle_C_SCORE(PacketSessionRef& session, Protocol::C_SCORE& pkt)
 {
+	auto gameSession = static_pointer_cast<GameSession>(session);
+
+	PlayerRef player = gameSession->player.load();
+	if (player == nullptr)
+		return false;
+
+	RoomRef room = player->room.load().lock();
+	if (room == nullptr)
+		return false;
+
+	GRoom->DoAsync(&Room::HandleScore, pkt);
+
 	return false;
 }

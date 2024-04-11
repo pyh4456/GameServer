@@ -42,7 +42,7 @@ message S_SPAWN
 
 message S_DESPAWN
 {
-	repeated uint64 object_ids = 1;
+	repeated ObjectInfo objects = 1;
 }
 
 message C_MOVE
@@ -55,37 +55,44 @@ message S_MOVE
 	PosInfo Info = 1;
 }
 
-message C_CHAT
-{
-	string msg = 1;
-}
-
 message C_SHOOT
 {
 	ObjectInfo object = 1;
 }
 
+message S_SHOOT
+{
+	ObjectInfo object = 1;
+	bool is_yours = 2;
+}
+
 message C_REMOVE_BULLET
 {
-	uint64 playerId = 1;
+	uint64 object_ids = 1;
 }
 
 message S_REMOVE_BULLET
 {
-	uint64 playerId = 1;
+	uint64 object_ids = 1;
 }
 
 
 message C_SCORE
 {
-	uint64 playerId = 1;
-	uint64 point = 2;
+	uint64 player_id = 1;
+	uint64 monster_id = 2;
+	uint64 point = 3;
 }
 
 message S_SCORE
 {
-	uint64 playerId = 1;
+	bool score_decision = 1;
 	uint64 point = 2;
+}
+
+message C_CHAT
+{
+	string msg = 1;
 }
 
 message S_CHAT
