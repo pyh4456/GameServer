@@ -60,9 +60,32 @@ message C_CHAT
 	string msg = 1;
 }
 
-message S_SHOOT
+message C_SHOOT
 {
+	ObjectInfo object = 1;
+}
 
+message C_REMOVE_BULLET
+{
+	uint64 playerId = 1;
+}
+
+message S_REMOVE_BULLET
+{
+	uint64 playerId = 1;
+}
+
+
+message C_SCORE
+{
+	uint64 playerId = 1;
+	uint64 point = 2;
+}
+
+message S_SCORE
+{
+	uint64 playerId = 1;
+	uint64 point = 2;
 }
 
 message S_CHAT

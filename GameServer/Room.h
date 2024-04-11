@@ -1,6 +1,8 @@
 #pragma once
 #include "JobQueue.h"
 
+#define MAX_NUM_OF_ENEMY 5
+
 class Room : public JobQueue
 {
 public:
@@ -14,6 +16,8 @@ public:
 	bool HandleEnterPlayer(PlayerRef player);
 	bool HandleLeavePlayer(PlayerRef player);
 	void HandleMove(Protocol::C_MOVE pkt);
+
+	void SpawnEnemy();
 
 public:
 	void UpdateTick();
@@ -29,6 +33,7 @@ private:
 
 private:
 	unordered_map<uint64, ObjectRef> _objects;
+	uint64 _numOfEnemy;
 };
 
 extern RoomRef GRoom;

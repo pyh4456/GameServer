@@ -60,12 +60,9 @@ int main()
 
 	while (true)
 	{
-		/*Protocol::S_CHAT pkt;
-		pkt.set_msg("Hello World");
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-
-		GSessionManager.Broadcast(sendBuffer);*/
-		this_thread::sleep_for(0.1s);
+		GRoom->SpawnEnemy();
+		cout << "Spawn Enemy\n";
+		this_thread::sleep_for(10s);
 	}
 	
 	GThreadManager->Join();

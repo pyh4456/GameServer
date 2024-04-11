@@ -1,12 +1,15 @@
 #include "pch.h"
 #include "Room.h"
 #include "Player.h"
+#include "Monster.h"
 #include "GameSession.h"
+#include "ObjectUtils.h"
 
 RoomRef GRoom = make_shared<Room>();
 
 Room::Room()
 {
+	_numOfEnemy = 0;
 }
 
 Room::~Room()
@@ -50,18 +53,18 @@ bool Room::EnterRoom(ObjectRef object, bool randPos)
 		Broadcast(sendBuffer, object->objectInfo->object_id());
 	}
 
-	//기존에 입장한 플레이어 목록을 플레이어에게 전송한다.
+	//기존에 입장한 오브젝트 목록을 플레이어에게 전송한다.
 	if (auto player = dynamic_pointer_cast<Player>(object))
 	{
 		Protocol::S_SPAWN spawnPkt;
 
 		for (auto& item : _objects)
 		{
-			if (item.second->IsPlayer() == false)
-				continue;
+			//if (item.second->IsPlayer() == false)
+			//	continue;
 
-			Protocol::ObjectInfo* playerInfo = spawnPkt.add_objects();
-			playerInfo->CopyFrom(*item.second->objectInfo);
+			Protocol::ObjectInfo* objectInfo = spawnPkt.add_objects();
+			objectInfo->CopyFrom(*item.second->objectInfo);
 		}
 
 		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(spawnPkt);
@@ -134,6 +137,22 @@ void Room::HandleMove(Protocol::C_MOVE pkt)
 		}
 		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(movePkt);
 		Broadcast(sendBuffer);
+	}
+}
+
+void Room::SpawnEnemy()
+{
+	while (_numOfEnemy < MAX_NUM_OF_ENEMY)
+	{
+		MonsterRef enemy = ObjectUtils::CreateMonster();
+		enemy->posInfo->set_x(Utils::GetRandom(0.f, 1000.f));
+		enemy->posInfo->set_y(Utils::GetRandom(0.f, 1000.f));
+		enemy->posInfo->set_z(100.f);
+		enemy->posInfo->set_yaw(Utils::GetRandom(0.f, 100.f));
+
+		EnterRoom(enemy, false);
+
+		_numOfEnemy++;
 	}
 }
 

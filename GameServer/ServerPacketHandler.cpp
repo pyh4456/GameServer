@@ -132,3 +132,18 @@ bool Handle_C_CHAT(PacketSessionRef& session, Protocol::C_CHAT& pkt)
 
 	return true;
 }
+
+bool Handle_C_SHOOT(PacketSessionRef& session, Protocol::C_SHOOT& pkt)
+{
+	return false;
+}
+
+bool Handle_C_REMOVE_BULLET(PacketSessionRef& session, Protocol::C_REMOVE_BULLET& pkt)
+{
+	return false;
+}
+
+bool Handle_C_SCORE(PacketSessionRef& session, Protocol::C_SCORE& pkt)
+{
+	return false;
+}
