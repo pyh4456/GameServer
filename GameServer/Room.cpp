@@ -87,11 +87,11 @@ bool Room::LeaveRoom(ObjectRef object)
 	// 퇴장 사실을 해당 플레이어에게 알린다.
 	if (auto player = dynamic_pointer_cast<Player>(object))
 	{
-		Protocol::S_LEAVE_GAME leaveGamePkt;
+		//Protocol::S_LEAVE_GAME leaveGamePkt;
 
-		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(leaveGamePkt);
-		if (auto session = player->session.lock())
-			session->Send(sendBuffer);
+		//SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(leaveGamePkt);
+		//if (auto session = player->session.lock())
+		//	session->Send(sendBuffer);
 	}
 
 	// 퇴장 사실을 다른 플레이어에게 알린다.
@@ -101,17 +101,12 @@ bool Room::LeaveRoom(ObjectRef object)
 		Protocol::ObjectInfo* objectInfo = despqwnPkt.add_objects();
 		objectInfo->CopyFrom(*object->objectInfo);
 
-		//Protocol::ObjectInfo* objectInfo = new Protocol::ObjectInfo();
-		//objectInfo->set_object_id(objectId);
-		//objectInfo->set_object_type(object->objectInfo->object_type());
-		//objectInfo = despqwnPkt.add_objects();
-
 		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(despqwnPkt);
 		Broadcast(sendBuffer, objectId);
 
-		if (auto player = dynamic_pointer_cast<Player>(object))
-			if (auto session = player->session.lock())
-				session->Send(sendBuffer);
+		//if (auto player = dynamic_pointer_cast<Player>(object))
+		//	if (auto session = player->session.lock())
+		//		session->Send(sendBuffer);
 	}
 
 	return success;

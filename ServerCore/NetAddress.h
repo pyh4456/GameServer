@@ -9,7 +9,7 @@ class NetAddress
 public:
 	NetAddress() = default;
 	NetAddress(SOCKADDR_IN sockAddr);
-	NetAddress(wstring ip, uint16 port);
+	NetAddress(wstring ip, char* domain, uint16 port, bool isDomainName);
 
 	SOCKADDR_IN&	GetSockAddr() { return _sockAddr; }
 	wstring			GetIpAddress();

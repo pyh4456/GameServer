@@ -101,7 +101,6 @@ bool Handle_C_LEAVE_GAME(PacketSessionRef& session, Protocol::C_LEAVE_GAME& pkt)
 		return false;
 
 	GRoom->DoAsync(&Room::HandleLeavePlayer, player);
-	//room->HandleLeavePlayer(player);
 
 	return true;
 }

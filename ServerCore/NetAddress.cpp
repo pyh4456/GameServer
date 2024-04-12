@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "NetAddress.h"
+#pragma warning(disable: 4996)
 
 /*--------------
 	NetAddress
@@ -9,7 +10,7 @@ NetAddress::NetAddress(SOCKADDR_IN sockAddr) : _sockAddr(sockAddr)
 {
 }
 
-NetAddress::NetAddress(wstring ip, uint16 port)
+NetAddress::NetAddress(wstring ip, char* domain, uint16 port, bool isDomainName)
 {
 	::memset(&_sockAddr, 0, sizeof(_sockAddr));
 	_sockAddr.sin_family = AF_INET;
