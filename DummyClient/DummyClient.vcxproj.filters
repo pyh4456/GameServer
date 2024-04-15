@@ -7,6 +7,9 @@
     <Filter Include="Protocol">
       <UniqueIdentifier>{64837686-7cef-49d6-8825-4f6dfff1a6fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{a287d5a4-b900-4471-ab31-1b35553a0a79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DummyClient.cpp">
@@ -27,6 +30,9 @@
     <ClCompile Include="Enum.pb.cc">
       <Filter>Protocol</Filter>
     </ClCompile>
+    <ClCompile Include="DummySession.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -43,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="Enum.pb.h">
       <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="DummySession.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -37,17 +37,17 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 		character->set_score(100 * (1 + i));
 		if (i == 0)
 		{
-			character->set_name(pkt.id() + "_Yoshika");
+			character->set_name(pkt.id());
 			player->set_player_type(Protocol::PLAYER_TYPE_YOSHIKA);
 		}
 		else if (i == 1)
 		{
-			character->set_name(pkt.id() + "_Lynette");
+			character->set_name(pkt.id());
 			player->set_player_type(Protocol::PLAYER_TYPE_LYNETTE);
 		}
 		else if (i == 2)
 		{
-			character->set_name(pkt.id() + "_Sanya");
+			character->set_name(pkt.id());
 			player->set_player_type(Protocol::PLAYER_TYPE_SANYA);
 		}
 	}
