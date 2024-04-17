@@ -5,20 +5,25 @@
 #include "Session.h"
 #include "ClientPacketHandler.h"
 #include "DummySession.h"
+#include "DummyManager.h"
 
 char sendData[] = "Hello World";
 
 int main()
 {
+	int64 numOfDummy = 0;
+
+	cout << "Enter Number : ";
+	cin >> numOfDummy;
+
 	ClientPacketHandler::Init();
 
 	this_thread::sleep_for(1s);
 
 	ClientServiceRef service = make_shared<ClientService>(
-		NetAddress(L"192.168.35.92", nullptr, 7777, true),
+		NetAddress(L"172.0.0.1", nullptr, 7777, true),
 		make_shared<IocpCore>(),
-		[=]() { return make_shared<DummySession>(); }, // TODO : SessionManager 등
-		1);
+		[=]() { return make_shared<DummySession>(); }, numOfDummy);
 
 	ASSERT_CRASH(service->Start());
 
@@ -33,11 +38,21 @@ int main()
 			});
 	}
 
-	while (true)
+	GThreadManager->Launch([=]()
 	{
-		//service->Broadcast(sendBuffer);
-		this_thread::sleep_for(1s);
-	}
+		while (true)
+		{
+			GDummyManager.Update();
+
+			this_thread::sleep_for(5s);
+		}
+	});
+
+	cout << "Enter 'quit' when to quit game : ";
+	string s;
+	cin >> s;
+
+	GDummyManager.Quit();
 
 	GThreadManager->Join();
 

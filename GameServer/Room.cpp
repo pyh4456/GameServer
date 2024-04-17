@@ -21,9 +21,9 @@ bool Room::EnterRoom(ObjectRef object, bool randPos)
 	bool success = AddObject(object);
 
 	if (randPos) {
-		object->posInfo->set_x(Utils::GetRandom(-1000.f, 1000.f));
-		object->posInfo->set_y(Utils::GetRandom(-1000.f, 1000.f));
-		object->posInfo->set_z(100.f);
+		object->posInfo->set_x(Utils::GetRandom(-1500.f, 1500.f));
+		object->posInfo->set_y(Utils::GetRandom(-1500.f, 1500.f));
+		object->posInfo->set_z(Utils::GetRandom(0.f, 200.f));
 		object->posInfo->set_yaw(Utils::GetRandom(0.f, 100.f));
 	}
 
@@ -187,11 +187,10 @@ void Room::SpawnEnemy()
 
 void Room::UpdateTick()
 {
-	//cout << "Update Room" << endl;
+	SpawnEnemy();
+	cout << "Spawn Enemy\n";
 
-	// TODO
-
-	DoTimer(100, &Room::UpdateTick);
+	DoTimer(10000, &Room::UpdateTick);
 }
 
 RoomRef Room::GetRoomRef()

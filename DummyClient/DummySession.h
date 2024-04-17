@@ -16,4 +16,13 @@ public:
 	virtual void OnSend(int32 len) override;
 
 	virtual void OnDisconnected() override;
+
+	void Quit();
+
+public:
+	void SetDummyInfo(Protocol::ObjectInfo info);
+	void RandomAction();
+
+public:
+	Protocol::ObjectInfo _dummyInfo;
 };

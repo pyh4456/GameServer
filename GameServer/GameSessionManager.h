@@ -11,6 +11,8 @@ public:
 	void Remove(GameSessionRef session);
 	void Broadcast(SendBufferRef sendBuffer);
 
+	void Quit();
+
 private:
 	USE_LOCK;
 	set<GameSessionRef> _sessions;

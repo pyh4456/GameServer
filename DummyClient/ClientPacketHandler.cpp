@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ClientPacketHandler.h"
 #include "BufferReader.h"
+#include "DummyManager.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -16,6 +17,9 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 
 bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 {
+	auto dummySession = static_pointer_cast<DummySession>(session);
+	dummySession->SetDummyInfo(pkt.player());
+
 	return true;
 }
 

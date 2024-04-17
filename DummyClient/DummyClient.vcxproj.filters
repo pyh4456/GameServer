@@ -10,6 +10,9 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{a287d5a4-b900-4471-ab31-1b35553a0a79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dummy">
+      <UniqueIdentifier>{94e22336-15fa-40c4-a8e9-f624dcb66b2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DummyClient.cpp">
@@ -33,6 +36,18 @@
     <ClCompile Include="DummySession.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="Dummy.cpp">
+      <Filter>Dummy</Filter>
+    </ClCompile>
+    <ClCompile Include="DummyManager.cpp">
+      <Filter>Dummy</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -52,6 +67,18 @@
     </ClInclude>
     <ClInclude Include="DummySession.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Dummy.h">
+      <Filter>Dummy</Filter>
+    </ClInclude>
+    <ClInclude Include="DummyManager.h">
+      <Filter>Dummy</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectUtils.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
