@@ -55,7 +55,7 @@ void DummySession::SetDummyInfo(Protocol::ObjectInfo info)
 
 void DummySession::RandomAction()
 {
-	int action = Utils::GetRandom(0, 7);
+	int64 action = Utils::GetRandom(0, 7);
 	Protocol::PosInfo* posInfo;
 
 	switch (action)
@@ -72,19 +72,19 @@ void DummySession::RandomAction()
 		break;
 	case 3:		//move +Y
 		posInfo = _dummyInfo.mutable_pos_info();
-		posInfo->set_x(posInfo->y() + 10);
+		posInfo->set_y(posInfo->y() + 10);
 		break;
 	case 4:		//move -Y
 		posInfo = _dummyInfo.mutable_pos_info();
-		posInfo->set_x(posInfo->y() - 10);
+		posInfo->set_y(posInfo->y() - 10);
 		break;
 	case 5:		//move +Z
 		posInfo = _dummyInfo.mutable_pos_info();
-		posInfo->set_x(posInfo->z() + 10);
+		posInfo->set_z(posInfo->z() + 10);
 		break;
 	case 6:		//move -Z
 		posInfo = _dummyInfo.mutable_pos_info();
-		posInfo->set_x(posInfo->z() - 10);
+		posInfo->set_z(posInfo->z() - 10);
 		break;
 	}
 }

@@ -21,7 +21,7 @@ int main()
 	this_thread::sleep_for(1s);
 
 	ClientServiceRef service = make_shared<ClientService>(
-		NetAddress(L"172.0.0.1", nullptr, 7777, true),
+		NetAddress(L"192.168.35.92", nullptr, 7777, true),
 		make_shared<IocpCore>(),
 		[=]() { return make_shared<DummySession>(); }, numOfDummy);
 
