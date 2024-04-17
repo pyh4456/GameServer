@@ -38,7 +38,7 @@ int main()
 	ServerPacketHandler::Init();
 
 	ServerServiceRef service = make_shared<ServerService>(
-		NetAddress(L"192.168.35.92", nullptr, 7777, true),
+		NetAddress(L"127.0.0.1", nullptr, 7777, true),
 		make_shared<IocpCore>(),
 		[=]() { return make_shared<GameSession>(); }, // TODO : SessionManager 등
 		100);

@@ -21,7 +21,7 @@ int main()
 	this_thread::sleep_for(1s);
 
 	ClientServiceRef service = make_shared<ClientService>(
-		NetAddress(L"192.168.35.92", nullptr, 7777, true),
+		NetAddress(L"127.0.0.1", nullptr, 7777, true),
 		make_shared<IocpCore>(),
 		[=]() { return make_shared<DummySession>(); }, numOfDummy);
 
@@ -44,15 +44,23 @@ int main()
 		{
 			GDummyManager.Update();
 
-			this_thread::sleep_for(5s);
+			this_thread::sleep_for(1s);
 		}
 	});
 
-	cout << "Enter 'quit' when to quit game : ";
 	string s;
-	cin >> s;
 
-	GDummyManager.Quit();
+	while (true) {
+		cout << "Enter 'quit' when to quit game : ";
+		cin >> s;
+
+		if (s == "quit")
+		{
+			GDummyManager.Quit();
+			break;
+		}
+	}
+	
 
 	GThreadManager->Join();
 

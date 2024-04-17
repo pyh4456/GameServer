@@ -36,14 +36,8 @@
     <ClCompile Include="DummySession.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="Dummy.cpp">
-      <Filter>Dummy</Filter>
-    </ClCompile>
     <ClCompile Include="DummyManager.cpp">
       <Filter>Dummy</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectUtils.cpp">
-      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Utils</Filter>
@@ -68,16 +62,10 @@
     <ClInclude Include="DummySession.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="Dummy.h">
-      <Filter>Dummy</Filter>
-    </ClInclude>
     <ClInclude Include="DummyManager.h">
       <Filter>Dummy</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

@@ -15,7 +15,6 @@
 #include "CorePch.h"
 
 #include "DummyManager.h"
-#include "Dummy.h"
 #include "Protocol.pb.h"
 #include "Enum.pb.h"
 #include "Struct.pb.h"

@@ -64,27 +64,27 @@ void DummySession::RandomAction()
 		break;
 	case 1:		//move +X
 		posInfo = _dummyInfo.mutable_pos_info();
-		posInfo->set_x(posInfo->x() + 10);
+		posInfo->set_x(posInfo->x() + 40);
 		break;
 	case 2:		//move -X
 		posInfo = _dummyInfo.mutable_pos_info();
-		posInfo->set_x(posInfo->x() - 10);
+		posInfo->set_x(posInfo->x() - 40);
 		break;
 	case 3:		//move +Y
 		posInfo = _dummyInfo.mutable_pos_info();
-		posInfo->set_y(posInfo->y() + 10);
+		posInfo->set_y(posInfo->y() + 40);
 		break;
 	case 4:		//move -Y
 		posInfo = _dummyInfo.mutable_pos_info();
-		posInfo->set_y(posInfo->y() - 10);
+		posInfo->set_y(posInfo->y() - 40);
 		break;
 	case 5:		//move +Z
 		posInfo = _dummyInfo.mutable_pos_info();
-		posInfo->set_z(posInfo->z() + 10);
+		posInfo->set_z(posInfo->z() + 40);
 		break;
 	case 6:		//move -Z
 		posInfo = _dummyInfo.mutable_pos_info();
-		posInfo->set_z(posInfo->z() - 10);
+		posInfo->set_z(posInfo->z() - 40);
 		break;
 	}
 }
