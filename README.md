@@ -5,7 +5,7 @@
 [https://github.com/pyh4456/Unreal-Engine-Client](https://github.com/pyh4456/Unreal-Engine-Client)<br>
 
 ## 2. 시연 영상
-<iframe width="1250" height="703" src="https://www.youtube.com/embed/73F0t-Co-v4" title="MMO Server 테스트" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[![Video Label](http://img.youtube.com/vi/73F0t-Co-v4/0.jpg)](https://youtu.be/73F0t-Co-v4)
 
 ## 3. 사용 기술
 #### -IOCP, winsock2
