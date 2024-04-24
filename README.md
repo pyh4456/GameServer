@@ -6,9 +6,9 @@
 
 ## 2. 시연 영상
 ## 3. 사용 기술
-### -IOCP
-### -JobQueue
-### -Protobuf
+#### -IOCP, winsock2
+#### -JobQueue, Job
+#### -Protobuf
 
 ## 4. 시스템 구성
 ### Data flow
