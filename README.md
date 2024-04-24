@@ -17,3 +17,11 @@
 ![GameServerSystem drawio](https://github.com/pyh4456/GameServer/assets/62279820/98846dba-c8e3-45ab-b90f-482726341934)
 
 ## 5. 사용법
+### 서버
+1. 현재 레포지토리의 파일을 다운받아 Server.sln 솔루션을 실행.
+2. 솔루션 내의 DummyClient와 GameServer 프로젝트를 빌드.
+3. GameServer프로젝트를 실행.
+
+### 클라이언트
+1. 상단의 소개에 있는 클라이언트 프로젝트를 다운받아 언리얼 엔진을 이용해 빌드하거나, 패키지된 파일을 받아서 실행한다.
+2. 서버가 열려있는 상태라면 로그인 버튼으로 접속 가능  
