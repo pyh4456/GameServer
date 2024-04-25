@@ -9,12 +9,21 @@
 
 ## 3. 사용 기술
 #### -IOCP, winsock2
+네트워크 통신을 위해 winsock2 라이브러리의 소켓을 사용했으며, 여러 소켓 통신을 효율적으로 처리하기 위해 IOCP를 채용했다.<br>
+IOCP에 관여하는 객체는 Listener와 Session 이며 두 객체는 각각 다음의 역할을 맏는다.
+ - Listener: 소켓을 생성해 클라이언트의 서버 접속을 받아준다.
+ - Session: Listener에서 생성된 소켓을 가지고 있으며, 해당 소켓에서 오는 패킷을 처리한다.
+ 
 #### -JobQueue, Job
+IOCP 모델은 멀티스레딩에서 효율적으로 작동하기 때문에 서버 내부에서도 멀티스레딩을 통해 작업을 처리한다. 이를위해 IOCP모델처럼 비동기적으로 작업을 처리할 수 있게 JobQueue를 정의했다.
+JobQueue는 함수객체인 Job의 대기열이며, 서버의 각 스레드들이 JobQueue에 Job을 넣으면 함수를 처리하는 스레드가 Job을 소모하게 된다. 이때, 하나의 스레드에 너무 많은 Job이 몰리지 않도록 하나의 스레드가 일정 시간이상 Job을 처리한다면 다른 스레드가 Job을 가져가게끔 설계되어 있다.
+
 #### -Protobuf
+Protobuf는 구조화된 데이터를 컴팩트하게 직렬화 해 네트워크 전송을 빠르게 해준다. 본 프로젝트에서는 각 프로토콜을 헤더로 사용해 프로토콜별로 처리하는 함수를 매칭할 수 있는 PacketHandler를 정의해서 사용한다.
 
 ## 4. 시스템 구성
 ### Data flow
-![GameServerSystem drawio](https://github.com/pyh4456/GameServer/assets/62279820/98846dba-c8e3-45ab-b90f-482726341934)
+![GameServerSystem drawio (1)](https://github.com/pyh4456/GameServer/assets/62279820/03447546-918b-4fed-9744-a70d95911c80)
 
 ## 5. 사용법
 ### 서버
