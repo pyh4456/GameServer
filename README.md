@@ -22,8 +22,19 @@ JobQueue는 함수객체인 Job의 대기열이며, 서버의 각 스레드들�
 Protobuf는 구조화된 데이터를 컴팩트하게 직렬화 해 네트워크 전송을 빠르게 해준다. 본 프로젝트에서는 각 프로토콜을 헤더로 사용해 프로토콜별로 처리하는 함수를 매칭할 수 있는 PacketHandler를 정의해서 사용한다.
 
 ## 4. 시스템 구성
-### Data flow
-![GameServerSystem drawio (1)](https://github.com/pyh4456/GameServer/assets/62279820/03447546-918b-4fed-9744-a70d95911c80)
+![GameServerSystem drawio](https://github.com/pyh4456/GameServer/assets/62279820/73bc0a8f-392a-4cf1-9cad-9a3a211a2af0)
+
+서버의 구성요소는 크게 세가지 IocpObejct, Service, JobQueue로 나누어지며 각각의 세부 기능은 다음과 같다.
+### 4.1 IocpObject
+클라이언트와의 소켓 통신을 관리하며, 소켓으로부터 데이터를 받으면 데이터에 해당하는 IocpEvent를 Service에 전달한다. IocpObejct중 Listener는 서버에 연결을 시도하는 클라이언트를 받아주며, 클라이언트가 접속했을때 AcceptEvent를 Service에 전달한다.
+Service가 AcceptEvent를 받으면 Session을 만들어 IOCP에 등록하며, Session을 통해 클라이언트와 Service가 서로 IocpEvnet를 주고 받을 수 있다.<br>
+### 4.2 Service
+IOCP에서 IocpEvent를 전달받아 해당 IocpObject가 받은 데이터를 처리한다. Listener로부터 이벤트를 받았다면 Session을 생성해 IOCP에 등록하고, Session으로부터 이벤트를 받았다면 이벤트 종류에 따라 Job을 생성해 JobQueue에 등록한다. 
+### 4.3 JobQueue 
+본 프로젝트에서는 JobQueue를 상속받은 Room 클래스가 게임에서의 맵 역할을 한다. 
+JobQueue는 전달받은 Job을 순차적으로 처리하며, Job을 처리하는 규칙은 다음과 같다. (여기서 Job을 실행하는 권한을 가진 스레드를 worker라고 한다.)
+1. 임의의 스레드가 Job을 등록하러 갔을때, worker가 없으면 해당 스레드가 Job의 실행 권한을 가진다. worker가 있다면 등록만 하고 빠져나온다.
+2. worker는 JobQueue에 쌓여있는 Job이 없어질 때 까지 Job을 실행하며, 너무 많은 Job이 등록되면 현재까지 쌓인 Job만 처리하며 worker자리를 비워놓는다.
 
 ## 5. 사용법
 ### 서버
