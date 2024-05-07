@@ -28,6 +28,8 @@ Protobuf는 구조화된 데이터를 컴팩트하게 직렬화 해 네트워크
 ### 4.1 Service
 IOCP에서 IocpEvent를 전달받아 해당 IocpObject가 받은 데이터를 처리한다. Listener로부터 이벤트를 받았다면 Session을 생성해 IOCP에 등록하고, Session으로부터 이벤트를 받았다면 이벤트 종류에 따라 Job을 생성해 JobQueue에 등록한다. 
 ### 4.2 IocpObject
+![IocpObject 계층구조](https://github.com/pyh4456/GameServer/assets/62279820/73284d82-598b-4c88-9ff7-1a36b77a26ea)
+
 클라이언트와의 소켓 통신을 관리하며, 소켓으로부터 데이터를 받으면 데이터에 해당하는 IocpEvent를 Service에 전달한다. IocpObejct중 Listener는 서버에 연결을 시도하는 클라이언트를 받아주며, 클라이언트가 접속했을때 AcceptEvent를 Service에 전달한다.
 Service가 AcceptEvent를 받으면 Session을 만들어 IOCP에 등록하며, Session을 통해 클라이언트와 Service가 서로 IocpEvnet를 주고 받을 수 있다.<br>
 ### 4.3 JobQueue 
