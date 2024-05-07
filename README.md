@@ -24,15 +24,20 @@ Protobuf는 구조화된 데이터를 컴팩트하게 직렬화 해 네트워크
 ## 4. 시스템 구성
 ![GameServerSystem drawio (1)](https://github.com/pyh4456/GameServer/assets/62279820/a3aa9753-9df7-461e-92c5-cb043e38663e)
 
-서버의 구성요소는 크게 세가지 Service, IocpObejct, JobQueue로 나누어지며 각각의 세부 기능은 다음과 같다.
+서버의 구성요소는 크게 세가지 Service, IocpObejct, JobQueue로 나누어지며 각각의 세부 사항은 다음과 같다.
 ### 4.1 Service
-IOCP에서 IocpEvent를 전달받아 해당 IocpObject가 받은 데이터를 처리한다. Listener로부터 이벤트를 받았다면 Session을 생성해 IOCP에 등록하고, Session으로부터 이벤트를 받았다면 이벤트 종류에 따라 Job을 생성해 JobQueue에 등록한다. 
+![Service](https://github.com/pyh4456/GameServer/assets/62279820/e3f70c45-8ac5-4eb0-9921-3becb0872da9)
+
+서버에서 전반적인 네트워크 기능을 담당한다. 서비스에는 IOCP에 접근하기 위한 IocpCore가 있으며 IocpObject는 IocpCore를 통해 Completion Queue를 사용한다. NetAddress는 서버 소켓의 주소를 담고 있으며, 생성된 IocpObject는 NetAddress의 주소를 받아서 바인딩한다.
+
 ### 4.2 IocpObject
 ![IocpObject 계층구조](https://github.com/pyh4456/GameServer/assets/62279820/73284d82-598b-4c88-9ff7-1a36b77a26ea)
 
-클라이언트와의 소켓 통신을 관리하며, 소켓으로부터 데이터를 받으면 데이터에 해당하는 IocpEvent를 Service에 전달한다. IocpObejct중 Listener는 서버에 연결을 시도하는 클라이언트를 받아주며, 클라이언트가 접속했을때 AcceptEvent를 Service에 전달한다.
-Service가 AcceptEvent를 받으면 Session을 만들어 IOCP에 등록하며, Session을 통해 클라이언트와 Service가 서로 IocpEvnet를 주고 받을 수 있다.<br>
-### 4.3 JobQueue 
+클라이언트와의 소켓 통신을 관리하며, 소켓으로부터 데이터를 받으면 데이터에 해당하는 IocpEvent를 Completion Queue에 등록. IocpObejct중 Listener는 서버에 연결을 시도하는 클라이언트를 받아주며, 클라이언트가 접속했을때 AcceptEvent를 Service에 전달한다.
+Service가 AcceptEvent를 받으면 Session을 만들어 IOCP에 등록한다. 이후 Session이 클라이언트로부터 IocpEvent를 수신하면 클라이언트의 요청에 맞는 Job을 생성해 JobQueue에 입력한다.<br>
+### 4.3 JobQueue
+![JobQueueFlowchart drawio](https://github.com/pyh4456/GameServer/assets/62279820/f8f3c97e-9a9d-428c-bb2b-9388f6cf488f)
+
 본 프로젝트에서는 JobQueue를 상속받은 Room 클래스가 게임에서의 맵 역할을 한다. 
 JobQueue는 전달받은 Job을 순차적으로 처리하며, Job을 처리하는 규칙은 다음과 같다. (여기서 Job을 실행하는 권한을 가진 스레드를 worker라고 한다.)
 1. 임의의 스레드가 Job을 등록하러 갔을때, worker가 없으면 해당 스레드가 Job의 실행 권한을 가진다. worker가 있다면 등록만 하고 빠져나온다.
