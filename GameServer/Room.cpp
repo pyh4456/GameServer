@@ -103,10 +103,6 @@ bool Room::LeaveRoom(ObjectRef object)
 
 		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(despqwnPkt);
 		Broadcast(sendBuffer, objectId);
-
-		//if (auto player = dynamic_pointer_cast<Player>(object))
-		//	if (auto session = player->session.lock())
-		//		session->Send(sendBuffer);
 	}
 
 	return success;
@@ -173,8 +169,8 @@ void Room::SpawnEnemy()
 	while (_numOfEnemy < MAX_NUM_OF_ENEMY)
 	{
 		MonsterRef enemy = ObjectUtils::CreateMonster();
-		enemy->posInfo->set_x(Utils::GetRandom(-2000.f, 2000.f));
-		enemy->posInfo->set_y(Utils::GetRandom(-2000.f, 2000.f));
+		enemy->posInfo->set_x(Utils::GetRandom(2000, 4000));
+		enemy->posInfo->set_y(Utils::GetRandom(2000, 4000));
 		enemy->posInfo->set_z(Utils::GetRandom(0.f, 200.f));
 		enemy->posInfo->set_yaw(Utils::GetRandom(0.f, 100.f));
 		enemy->score = 100;

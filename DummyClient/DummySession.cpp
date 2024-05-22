@@ -6,11 +6,26 @@ void DummySession::OnConnected()
 {
 	cout << "OnConnected" << endl;
 
+	int64 characterType = Utils::GetRandom(1, 3);
+
+
 	Protocol::C_ENTER_GAME pkt;
 
 	Protocol::ObjectInfo *info = new Protocol::ObjectInfo;
 	pkt.set_allocated_selectedcharacter(info);
-	info->set_player_type(Protocol::PLAYER_TYPE_YOSHIKA);
+	switch (characterType)
+	{
+	case 1:
+		info->set_player_type(Protocol::PLAYER_TYPE_YOSHIKA);
+		break;
+	case 2:
+		info->set_player_type(Protocol::PLAYER_TYPE_LYNETTE);
+		break;
+	case 3:
+		info->set_player_type(Protocol::PLAYER_TYPE_SANYA);
+		break;
+	}
+	
 	info->mutable_player_info()->set_name("Dummy");
 	info->mutable_player_info()->set_score(0);
 

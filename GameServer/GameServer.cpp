@@ -54,7 +54,6 @@ int main()
 	}
 
 	// Main Thread
-	//DoWorkerJob(service);
 
 	GRoom->DoAsync(&Room::UpdateTick);
 
