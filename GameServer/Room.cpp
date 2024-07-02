@@ -5,11 +5,13 @@
 #include "GameSession.h"
 #include "ObjectUtils.h"
 
-RoomRef GRoom = make_shared<Room>();
+vector<RoomRef> Rooms(9);
 
 Room::Room()
 {
 	_numOfEnemy = 0;
+	_originCoordinatesX = 0;
+	_originCoordinatesY = 0;
 }
 
 Room::~Room()
@@ -87,21 +89,21 @@ bool Room::LeaveRoom(ObjectRef object)
 	// 퇴장 사실을 해당 플레이어에게 알린다.
 	if (auto player = dynamic_pointer_cast<Player>(object))
 	{
-		//Protocol::S_LEAVE_GAME leaveGamePkt;
+		/*Protocol::S_LEAVE_GAME leaveGamePkt;
 
-		//SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(leaveGamePkt);
-		//if (auto session = player->session.lock())
-		//	session->Send(sendBuffer);
+		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(leaveGamePkt);
+		if (auto session = player->session.lock())
+			session->Send(sendBuffer);*/
 	}
 
 	// 퇴장 사실을 다른 플레이어에게 알린다.
 	{
-		Protocol::S_DESPAWN despqwnPkt;
+		Protocol::S_DESPAWN despawnPkt;
 
-		Protocol::ObjectInfo* objectInfo = despqwnPkt.add_objects();
+		Protocol::ObjectInfo* objectInfo = despawnPkt.add_objects();
 		objectInfo->CopyFrom(*object->objectInfo);
 
-		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(despqwnPkt);
+		SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(despawnPkt);
 		Broadcast(sendBuffer, objectId);
 	}
 
@@ -116,6 +118,11 @@ bool Room::HandleEnterPlayer(PlayerRef player)
 bool Room::HandleLeavePlayer(PlayerRef player)
 {
 	return LeaveRoom(player);
+}
+
+bool Room::HandleEnterRoom(PlayerRef player)
+{
+	return EnterRoom(player, false);
 }
 
 void Room::HandleMove(Protocol::C_MOVE pkt)
@@ -169,8 +176,8 @@ void Room::SpawnEnemy()
 	while (_numOfEnemy < MAX_NUM_OF_ENEMY)
 	{
 		MonsterRef enemy = ObjectUtils::CreateMonster();
-		enemy->posInfo->set_x(Utils::GetRandom(2000, 4000));
-		enemy->posInfo->set_y(Utils::GetRandom(2000, 4000));
+		enemy->posInfo->set_x(_originCoordinatesX + Utils::GetRandom((int64)-1000, (int64)1000));
+		enemy->posInfo->set_y(_originCoordinatesY + Utils::GetRandom((int64)-1000, (int64)1000));
 		enemy->posInfo->set_z(Utils::GetRandom(0.f, 200.f));
 		enemy->posInfo->set_yaw(Utils::GetRandom(0.f, 100.f));
 		enemy->score = 100;
@@ -179,6 +186,12 @@ void Room::SpawnEnemy()
 
 		_numOfEnemy++;
 	}
+}
+
+void Room::SetCoordinates(int64 x, int64 y)
+{
+	_originCoordinatesX = x;
+	_originCoordinatesY = y;
 }
 
 void Room::UpdateTick()

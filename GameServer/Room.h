@@ -15,10 +15,12 @@ public:
 
 	bool HandleEnterPlayer(PlayerRef player);
 	bool HandleLeavePlayer(PlayerRef player);
+	bool HandleEnterRoom(PlayerRef player);
 	void HandleMove(Protocol::C_MOVE pkt);
 	void HandleScore(Protocol::C_SCORE pkt);
 
 	void SpawnEnemy();
+	void SetCoordinates(int64 x, int64 y);
 
 public:
 	void UpdateTick();
@@ -35,6 +37,8 @@ private:
 private:
 	unordered_map<uint64, ObjectRef> _objects;
 	uint64 _numOfEnemy;
+	int64 _originCoordinatesX;
+	int64 _originCoordinatesY;
 };
 
-extern RoomRef GRoom;
+extern class vector<RoomRef> Rooms;

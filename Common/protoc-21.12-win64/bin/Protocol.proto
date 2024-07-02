@@ -27,6 +27,18 @@ message S_ENTER_GAME
 	ObjectInfo player = 2;
 }
 
+message C_ENTER_ROOM
+{
+	ObjectInfo player = 1;
+	uint64 roomNumber = 2;
+}
+
+message S_ENTER_ROOM
+{
+	bool success = 1;
+	ObjectInfo player = 2;
+}
+
 message C_LEAVE_GAME
 {
 }

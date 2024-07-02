@@ -86,6 +86,10 @@ ServerService::ServerService(NetAddress address, IocpCoreRef core, SessionFactor
 {
 }
 
+/*-----------------
+	ServerService
+------------------*/
+
 bool ServerService::Start()
 {
 	if (CanStart() == false)
