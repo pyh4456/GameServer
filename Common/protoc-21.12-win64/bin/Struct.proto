@@ -29,4 +29,3 @@ message ObjectInfo
 	CharacterInfo player_info = 5;
 	ProjectileType projectile_type = 6;
 }
-

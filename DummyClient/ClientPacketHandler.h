@@ -30,6 +30,8 @@ enum : uint16
 	PKT_S_SCORE = 1017,
 	PKT_C_CHAT = 1018,
 	PKT_S_CHAT = 1019,
+	PKT_C_AI_TARGET = 1020,
+	PKT_S_AI_TARGET = 1021,
 };
 
 // Custom Handlers
@@ -45,6 +47,7 @@ bool Handle_S_SHOOT(PacketSessionRef& session, Protocol::S_SHOOT& pkt);
 bool Handle_S_REMOVE_BULLET(PacketSessionRef& session, Protocol::S_REMOVE_BULLET& pkt);
 bool Handle_S_SCORE(PacketSessionRef& session, Protocol::S_SCORE& pkt);
 bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt);
+bool Handle_S_AI_TARGET(PacketSessionRef& session, Protocol::S_AI_TARGET& pkt);
 
 class ClientPacketHandler
 {
@@ -64,6 +67,7 @@ public:
 		GPacketHandler[PKT_S_REMOVE_BULLET] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_REMOVE_BULLET>(Handle_S_REMOVE_BULLET, session, buffer, len); };
 		GPacketHandler[PKT_S_SCORE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_SCORE>(Handle_S_SCORE, session, buffer, len); };
 		GPacketHandler[PKT_S_CHAT] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_CHAT>(Handle_S_CHAT, session, buffer, len); };
+		GPacketHandler[PKT_S_AI_TARGET] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_AI_TARGET>(Handle_S_AI_TARGET, session, buffer, len); };
 	}
 
 	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -80,6 +84,7 @@ public:
 	static SendBufferRef MakeSendBuffer(Protocol::C_REMOVE_BULLET& pkt) { return MakeSendBuffer(pkt, PKT_C_REMOVE_BULLET); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_SCORE& pkt) { return MakeSendBuffer(pkt, PKT_C_SCORE); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_C_CHAT); }
+	static SendBufferRef MakeSendBuffer(Protocol::C_AI_TARGET& pkt) { return MakeSendBuffer(pkt, PKT_C_AI_TARGET); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>

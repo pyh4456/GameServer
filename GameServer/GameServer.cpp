@@ -5,7 +5,6 @@
 #include "Session.h"
 #include "GameSession.h"
 #include "GameSessionManager.h"
-//#include "ClientPacketHandler.h"
 #include <tchar.h>
 #include "Job.h"
 #include "Protocol.pb.h"
@@ -37,10 +36,11 @@ int main()
 {
 	ServerPacketHandler::Init();
 
+	// 서비스 초기화
 	ServerServiceRef service = make_shared<ServerService>(
 		NetAddress(L"192.168.35.92", nullptr, 7777, true),
 		make_shared<IocpCore>(),
-		[=]() { return make_shared<GameSession>(); }, // TODO : SessionManager 등
+		[=]() { return make_shared<GameSession>(); },
 		100);
 
 	ASSERT_CRASH(service->Start());
@@ -55,7 +55,6 @@ int main()
 
 
 	// 맵 초기화
-
 	for (int i = 0; i < 9; i++)
 	{	
 		Rooms[i] = make_shared<Room>();
@@ -74,13 +73,6 @@ int main()
 	for (int i = 0; i < 9; i++)
 	{
 		Rooms[i]->DoAsync(&Room::UpdateTick);
-	}
-	
-
-	while (true)
-	{
-		
-		this_thread::sleep_for(10s);
 	}
 	
 	GThreadManager->Join();

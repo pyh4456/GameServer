@@ -1,7 +1,7 @@
 #pragma once
 #include "JobQueue.h"
 
-#define MAX_NUM_OF_ENEMY 10
+#define MAX_NUM_OF_ENEMY 1
 
 class Room : public JobQueue
 {

@@ -112,3 +112,14 @@ message S_CHAT
 	uint64 playerId = 1;
 	string msg = 2;
 }
+
+message C_AI_TARGET
+{
+
+}
+
+message S_AI_TARGET
+{
+	uint64 object_id = 1;
+	PosInfo target_location = 2;
+}

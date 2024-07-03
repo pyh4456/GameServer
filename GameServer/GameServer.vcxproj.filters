@@ -16,6 +16,9 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{df89d392-bc57-41a4-92f7-85520292b000}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{2dc9d423-a6ba-4882-89a9-acb73902ca71}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameServer.cpp">
