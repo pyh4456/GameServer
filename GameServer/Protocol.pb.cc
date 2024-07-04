@@ -287,31 +287,32 @@ struct S_CHATDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_CHATDefaultTypeInternal _S_CHAT_default_instance_;
-PROTOBUF_CONSTEXPR C_AI_TARGET::C_AI_TARGET(
+PROTOBUF_CONSTEXPR C_AI::C_AI(
     ::_pbi::ConstantInitialized) {}
-struct C_AI_TARGETDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR C_AI_TARGETDefaultTypeInternal()
+struct C_AIDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR C_AIDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~C_AI_TARGETDefaultTypeInternal() {}
+  ~C_AIDefaultTypeInternal() {}
   union {
-    C_AI_TARGET _instance;
+    C_AI _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 C_AI_TARGETDefaultTypeInternal _C_AI_TARGET_default_instance_;
-PROTOBUF_CONSTEXPR S_AI_TARGET::S_AI_TARGET(
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 C_AIDefaultTypeInternal _C_AI_default_instance_;
+PROTOBUF_CONSTEXPR S_AI::S_AI(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.target_location_)*/nullptr
   , /*decltype(_impl_.object_id_)*/uint64_t{0u}
+  , /*decltype(_impl_.state_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
-struct S_AI_TARGETDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR S_AI_TARGETDefaultTypeInternal()
+struct S_AIDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR S_AIDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~S_AI_TARGETDefaultTypeInternal() {}
+  ~S_AIDefaultTypeInternal() {}
   union {
-    S_AI_TARGET _instance;
+    S_AI _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_AI_TARGETDefaultTypeInternal _S_AI_TARGET_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_AIDefaultTypeInternal _S_AI_default_instance_;
 }  // namespace Protocol
 static ::_pb::Metadata file_level_metadata_Protocol_2eproto[22];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_Protocol_2eproto = nullptr;
@@ -467,19 +468,20 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   PROTOBUF_FIELD_OFFSET(::Protocol::S_CHAT, _impl_.playerid_),
   PROTOBUF_FIELD_OFFSET(::Protocol::S_CHAT, _impl_.msg_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::Protocol::C_AI_TARGET, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::C_AI, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::Protocol::S_AI_TARGET, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_AI, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Protocol::S_AI_TARGET, _impl_.object_id_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::S_AI_TARGET, _impl_.target_location_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_AI, _impl_.object_id_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_AI, _impl_.state_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_AI, _impl_.target_location_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::Protocol::C_LOGIN)},
@@ -502,8 +504,8 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 125, -1, -1, sizeof(::Protocol::S_SCORE)},
   { 133, -1, -1, sizeof(::Protocol::C_CHAT)},
   { 140, -1, -1, sizeof(::Protocol::S_CHAT)},
-  { 148, -1, -1, sizeof(::Protocol::C_AI_TARGET)},
-  { 154, -1, -1, sizeof(::Protocol::S_AI_TARGET)},
+  { 148, -1, -1, sizeof(::Protocol::C_AI)},
+  { 154, -1, -1, sizeof(::Protocol::S_AI)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -527,8 +529,8 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::Protocol::_S_SCORE_default_instance_._instance,
   &::Protocol::_C_CHAT_default_instance_._instance,
   &::Protocol::_S_CHAT_default_instance_._instance,
-  &::Protocol::_C_AI_TARGET_default_instance_._instance,
-  &::Protocol::_S_AI_TARGET_default_instance_._instance,
+  &::Protocol::_C_AI_default_instance_._instance,
+  &::Protocol::_S_AI_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -557,10 +559,10 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "\001 \001(\004\022\022\n\nmonster_id\030\002 \001(\004\022\r\n\005point\030\003 \001(\004"
   "\"0\n\007S_SCORE\022\026\n\016score_decision\030\001 \001(\010\022\r\n\005p"
   "oint\030\002 \001(\004\"\025\n\006C_CHAT\022\013\n\003msg\030\001 \001(\t\"\'\n\006S_C"
-  "HAT\022\020\n\010playerId\030\001 \001(\004\022\013\n\003msg\030\002 \001(\t\"\r\n\013C_"
-  "AI_TARGET\"L\n\013S_AI_TARGET\022\021\n\tobject_id\030\001 "
-  "\001(\004\022*\n\017target_location\030\002 \001(\0132\021.Protocol."
-  "PosInfob\006proto3"
+  "HAT\022\020\n\010playerId\030\001 \001(\004\022\013\n\003msg\030\002 \001(\t\"\006\n\004C_"
+  "AI\"g\n\004S_AI\022\021\n\tobject_id\030\001 \001(\004\022 \n\005state\030\002"
+  " \001(\0162\021.Protocol.AiState\022*\n\017target_locati"
+  "on\030\003 \001(\0132\021.Protocol.PosInfob\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_deps[2] = {
   &::descriptor_table_Enum_2eproto,
@@ -568,7 +570,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_de
 };
 static ::_pbi::once_flag descriptor_table_Protocol_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Protocol_2eproto = {
-    false, false, 1135, descriptor_table_protodef_Protocol_2eproto,
+    false, false, 1155, descriptor_table_protodef_Protocol_2eproto,
     "Protocol.proto",
     &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 2, 22,
     schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
@@ -4460,31 +4462,31 @@ void S_CHAT::InternalSwap(S_CHAT* other) {
 
 // ===================================================================
 
-class C_AI_TARGET::_Internal {
+class C_AI::_Internal {
  public:
 };
 
-C_AI_TARGET::C_AI_TARGET(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+C_AI::C_AI(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
-  // @@protoc_insertion_point(arena_constructor:Protocol.C_AI_TARGET)
+  // @@protoc_insertion_point(arena_constructor:Protocol.C_AI)
 }
-C_AI_TARGET::C_AI_TARGET(const C_AI_TARGET& from)
+C_AI::C_AI(const C_AI& from)
   : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
-  C_AI_TARGET* const _this = this; (void)_this;
+  C_AI* const _this = this; (void)_this;
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:Protocol.C_AI_TARGET)
+  // @@protoc_insertion_point(copy_constructor:Protocol.C_AI)
 }
 
 
 
 
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData C_AI_TARGET::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData C_AI::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl,
     ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl,
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*C_AI_TARGET::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*C_AI::GetClassData() const { return &_class_data_; }
 
 
 
@@ -4492,7 +4494,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*C_AI_TARGET::GetClassData() co
 
 
 
-::PROTOBUF_NAMESPACE_ID::Metadata C_AI_TARGET::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata C_AI::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
       file_level_metadata_Protocol_2eproto[20]);
@@ -4500,56 +4502,60 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*C_AI_TARGET::GetClassData() co
 
 // ===================================================================
 
-class S_AI_TARGET::_Internal {
+class S_AI::_Internal {
  public:
-  static const ::Protocol::PosInfo& target_location(const S_AI_TARGET* msg);
+  static const ::Protocol::PosInfo& target_location(const S_AI* msg);
 };
 
 const ::Protocol::PosInfo&
-S_AI_TARGET::_Internal::target_location(const S_AI_TARGET* msg) {
+S_AI::_Internal::target_location(const S_AI* msg) {
   return *msg->_impl_.target_location_;
 }
-void S_AI_TARGET::clear_target_location() {
+void S_AI::clear_target_location() {
   if (GetArenaForAllocation() == nullptr && _impl_.target_location_ != nullptr) {
     delete _impl_.target_location_;
   }
   _impl_.target_location_ = nullptr;
 }
-S_AI_TARGET::S_AI_TARGET(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+S_AI::S_AI(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:Protocol.S_AI_TARGET)
+  // @@protoc_insertion_point(arena_constructor:Protocol.S_AI)
 }
-S_AI_TARGET::S_AI_TARGET(const S_AI_TARGET& from)
+S_AI::S_AI(const S_AI& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
-  S_AI_TARGET* const _this = this; (void)_this;
+  S_AI* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.target_location_){nullptr}
     , decltype(_impl_.object_id_){}
+    , decltype(_impl_.state_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_target_location()) {
     _this->_impl_.target_location_ = new ::Protocol::PosInfo(*from._impl_.target_location_);
   }
-  _this->_impl_.object_id_ = from._impl_.object_id_;
-  // @@protoc_insertion_point(copy_constructor:Protocol.S_AI_TARGET)
+  ::memcpy(&_impl_.object_id_, &from._impl_.object_id_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.state_) -
+    reinterpret_cast<char*>(&_impl_.object_id_)) + sizeof(_impl_.state_));
+  // @@protoc_insertion_point(copy_constructor:Protocol.S_AI)
 }
 
-inline void S_AI_TARGET::SharedCtor(
+inline void S_AI::SharedCtor(
     ::_pb::Arena* arena, bool is_message_owned) {
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
       decltype(_impl_.target_location_){nullptr}
     , decltype(_impl_.object_id_){uint64_t{0u}}
+    , decltype(_impl_.state_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
 
-S_AI_TARGET::~S_AI_TARGET() {
-  // @@protoc_insertion_point(destructor:Protocol.S_AI_TARGET)
+S_AI::~S_AI() {
+  // @@protoc_insertion_point(destructor:Protocol.S_AI)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -4557,17 +4563,17 @@ S_AI_TARGET::~S_AI_TARGET() {
   SharedDtor();
 }
 
-inline void S_AI_TARGET::SharedDtor() {
+inline void S_AI::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete _impl_.target_location_;
 }
 
-void S_AI_TARGET::SetCachedSize(int size) const {
+void S_AI::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void S_AI_TARGET::Clear() {
-// @@protoc_insertion_point(message_clear_start:Protocol.S_AI_TARGET)
+void S_AI::Clear() {
+// @@protoc_insertion_point(message_clear_start:Protocol.S_AI)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -4576,11 +4582,13 @@ void S_AI_TARGET::Clear() {
     delete _impl_.target_location_;
   }
   _impl_.target_location_ = nullptr;
-  _impl_.object_id_ = uint64_t{0u};
+  ::memset(&_impl_.object_id_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.state_) -
+      reinterpret_cast<char*>(&_impl_.object_id_)) + sizeof(_impl_.state_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* S_AI_TARGET::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* S_AI::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
@@ -4594,9 +4602,18 @@ const char* S_AI_TARGET::_InternalParse(const char* ptr, ::_pbi::ParseContext* c
         } else
           goto handle_unusual;
         continue;
-      // .Protocol.PosInfo target_location = 2;
+      // .Protocol.AiState state = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_state(static_cast<::Protocol::AiState>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      // .Protocol.PosInfo target_location = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr = ctx->ParseMessage(_internal_mutable_target_location(), ptr);
           CHK_(ptr);
         } else
@@ -4625,9 +4642,9 @@ failure:
 #undef CHK_
 }
 
-uint8_t* S_AI_TARGET::_InternalSerialize(
+uint8_t* S_AI::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Protocol.S_AI_TARGET)
+  // @@protoc_insertion_point(serialize_to_array_start:Protocol.S_AI)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -4637,10 +4654,17 @@ uint8_t* S_AI_TARGET::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteUInt64ToArray(1, this->_internal_object_id(), target);
   }
 
-  // .Protocol.PosInfo target_location = 2;
+  // .Protocol.AiState state = 2;
+  if (this->_internal_state() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      2, this->_internal_state(), target);
+  }
+
+  // .Protocol.PosInfo target_location = 3;
   if (this->_internal_has_target_location()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(2, _Internal::target_location(this),
+      InternalWriteMessage(3, _Internal::target_location(this),
         _Internal::target_location(this).GetCachedSize(), target, stream);
   }
 
@@ -4648,19 +4672,19 @@ uint8_t* S_AI_TARGET::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:Protocol.S_AI_TARGET)
+  // @@protoc_insertion_point(serialize_to_array_end:Protocol.S_AI)
   return target;
 }
 
-size_t S_AI_TARGET::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:Protocol.S_AI_TARGET)
+size_t S_AI::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Protocol.S_AI)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .Protocol.PosInfo target_location = 2;
+  // .Protocol.PosInfo target_location = 3;
   if (this->_internal_has_target_location()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
@@ -4672,20 +4696,26 @@ size_t S_AI_TARGET::ByteSizeLong() const {
     total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_object_id());
   }
 
+  // .Protocol.AiState state = 2;
+  if (this->_internal_state() != 0) {
+    total_size += 1 +
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_state());
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData S_AI_TARGET::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData S_AI::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    S_AI_TARGET::MergeImpl
+    S_AI::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*S_AI_TARGET::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*S_AI::GetClassData() const { return &_class_data_; }
 
 
-void S_AI_TARGET::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<S_AI_TARGET*>(&to_msg);
-  auto& from = static_cast<const S_AI_TARGET&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:Protocol.S_AI_TARGET)
+void S_AI::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<S_AI*>(&to_msg);
+  auto& from = static_cast<const S_AI&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:Protocol.S_AI)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -4697,32 +4727,35 @@ void S_AI_TARGET::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PR
   if (from._internal_object_id() != 0) {
     _this->_internal_set_object_id(from._internal_object_id());
   }
+  if (from._internal_state() != 0) {
+    _this->_internal_set_state(from._internal_state());
+  }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void S_AI_TARGET::CopyFrom(const S_AI_TARGET& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:Protocol.S_AI_TARGET)
+void S_AI::CopyFrom(const S_AI& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Protocol.S_AI)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool S_AI_TARGET::IsInitialized() const {
+bool S_AI::IsInitialized() const {
   return true;
 }
 
-void S_AI_TARGET::InternalSwap(S_AI_TARGET* other) {
+void S_AI::InternalSwap(S_AI* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(S_AI_TARGET, _impl_.object_id_)
-      + sizeof(S_AI_TARGET::_impl_.object_id_)
-      - PROTOBUF_FIELD_OFFSET(S_AI_TARGET, _impl_.target_location_)>(
+      PROTOBUF_FIELD_OFFSET(S_AI, _impl_.state_)
+      + sizeof(S_AI::_impl_.state_)
+      - PROTOBUF_FIELD_OFFSET(S_AI, _impl_.target_location_)>(
           reinterpret_cast<char*>(&_impl_.target_location_),
           reinterpret_cast<char*>(&other->_impl_.target_location_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata S_AI_TARGET::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata S_AI::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
       file_level_metadata_Protocol_2eproto[21]);
@@ -4811,13 +4844,13 @@ template<> PROTOBUF_NOINLINE ::Protocol::S_CHAT*
 Arena::CreateMaybeMessage< ::Protocol::S_CHAT >(Arena* arena) {
   return Arena::CreateMessageInternal< ::Protocol::S_CHAT >(arena);
 }
-template<> PROTOBUF_NOINLINE ::Protocol::C_AI_TARGET*
-Arena::CreateMaybeMessage< ::Protocol::C_AI_TARGET >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::Protocol::C_AI_TARGET >(arena);
+template<> PROTOBUF_NOINLINE ::Protocol::C_AI*
+Arena::CreateMaybeMessage< ::Protocol::C_AI >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::Protocol::C_AI >(arena);
 }
-template<> PROTOBUF_NOINLINE ::Protocol::S_AI_TARGET*
-Arena::CreateMaybeMessage< ::Protocol::S_AI_TARGET >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::Protocol::S_AI_TARGET >(arena);
+template<> PROTOBUF_NOINLINE ::Protocol::S_AI*
+Arena::CreateMaybeMessage< ::Protocol::S_AI >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::Protocol::S_AI >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

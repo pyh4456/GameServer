@@ -66,6 +66,9 @@
     <ClCompile Include="Object.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -184,6 +184,9 @@ void Room::SpawnEnemy()
 
 		EnterRoom(enemy, false);
 
+		//enemy->RunAi();
+		HandleAi(enemy);
+
 		_numOfEnemy++;
 	}
 }
@@ -192,6 +195,25 @@ void Room::SetCoordinates(int64 x, int64 y)
 {
 	_originCoordinatesX = x;
 	_originCoordinatesY = y;
+}
+
+void Room::HandleAi(CreatureRef creature)
+{
+	const uint64 monsterId = creature->objectInfo->object_id();
+	if (_objects.find(monsterId) == _objects.end())
+		return;
+
+	Protocol::S_AI aiPkt;
+
+	aiPkt.set_object_id(monsterId);
+	aiPkt.set_state(Protocol::AISTATE_ATTACK);
+
+
+	SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(aiPkt);
+
+	Broadcast(sendBuffer, 0);
+
+	DoTimer(1000, &Room::HandleAi, creature);
 }
 
 void Room::UpdateTick()

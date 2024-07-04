@@ -113,13 +113,14 @@ message S_CHAT
 	string msg = 2;
 }
 
-message C_AI_TARGET
+message C_AI
 {
 
 }
 
-message S_AI_TARGET
+message S_AI
 {
 	uint64 object_id = 1;
-	PosInfo target_location = 2;
+	AiState state = 2;
+	PosInfo target_location = 3;
 }

@@ -22,7 +22,7 @@ namespace _pbi = _pb::internal;
 
 namespace Protocol {
 }  // namespace Protocol
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[4];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[5];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_Enum_2eproto = nullptr;
 const uint32_t TableStruct_Enum_2eproto::offsets[1] = {};
 static constexpr ::_pbi::MigrationSchema* schemas = nullptr;
@@ -41,12 +41,14 @@ const char descriptor_table_protodef_Enum_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "RUN\020\002\022\022\n\016MOVE_STATE_AIM\020\003*\177\n\016ProjectileT"
   "ype\022\030\n\024PROJECTILE_TYPE_NONE\020\000\022\033\n\027PROJECT"
   "ILE_TYPE_YOSHIKA\020\001\022\033\n\027PROJECTILE_TYPE_LY"
-  "NETTE\020\002\022\031\n\025PROJECTILE_TYPE_SANYA\020\003b\006prot"
-  "o3"
+  "NETTE\020\002\022\031\n\025PROJECTILE_TYPE_SANYA\020\003*h\n\007Ai"
+  "State\022\020\n\014AISTATE_NONE\020\000\022\020\n\014AISTATE_IDLE\020"
+  "\001\022\020\n\014AISTATE_MOVE\020\002\022\022\n\016AISTATE_ATTACK\020\003\022"
+  "\023\n\017AISTATE_RUNAWAY\020\004b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_Enum_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Enum_2eproto = {
-    false, false, 522, descriptor_table_protodef_Enum_2eproto,
+    false, false, 628, descriptor_table_protodef_Enum_2eproto,
     "Enum.proto",
     &descriptor_table_Enum_2eproto_once, nullptr, 0, 0,
     schemas, file_default_instances, TableStruct_Enum_2eproto::offsets,
@@ -120,6 +122,23 @@ bool ProjectileType_IsValid(int value) {
     case 1:
     case 2:
     case 3:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* AiState_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[4];
+}
+bool AiState_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
       return true;
     default:
       return false;

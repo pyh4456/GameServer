@@ -151,7 +151,7 @@ bool Handle_C_CHAT(PacketSessionRef& session, Protocol::C_CHAT& pkt)
 	return true;
 }
 
-bool Handle_C_AI_TARGET(PacketSessionRef& session, Protocol::C_AI_TARGET& pkt)
+bool Handle_C_AI(PacketSessionRef& session, Protocol::C_AI& pkt)
 {
 	return false;
 }

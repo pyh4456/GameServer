@@ -1,7 +1,7 @@
 #pragma once
 #include "JobQueue.h"
 
-#define MAX_NUM_OF_ENEMY 1
+#define MAX_NUM_OF_ENEMY 3
 
 class Room : public JobQueue
 {
@@ -21,6 +21,9 @@ public:
 
 	void SpawnEnemy();
 	void SetCoordinates(int64 x, int64 y);
+
+public:
+	void HandleAi(CreatureRef creature);
 
 public:
 	void UpdateTick();
