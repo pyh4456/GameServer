@@ -8,6 +8,7 @@ GameServer/x64/
 ServerCore/x64/
 /Libraries/Libs/ServerCore/
 
+
 # Compiled Object files
 *.slo
 *.lo
@@ -20,4 +21,3 @@ ServerCore/x64/
 *.exe
 
 *.vcxproj.filters
-/Libraries/Libs/ServerCore/Debug/ServerCore.lib

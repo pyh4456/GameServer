@@ -23,7 +23,8 @@ public:
 	void SetCoordinates(int64 x, int64 y);
 
 public:
-	void HandleAi(CreatureRef creature);
+	void HandleAi(uint64 ObjectId);
+	Protocol::PosInfo* FindClosestPlayer(uint64 objectId);
 
 public:
 	void UpdateTick();
@@ -33,6 +34,7 @@ public:
 private:
 	bool AddObject(ObjectRef object);
 	bool RemoveObject(uint64 objectId);
+	
 
 private:
 	void Broadcast(SendBufferRef sendBuffer, uint64 exceptId = 0);

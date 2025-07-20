@@ -4,6 +4,8 @@
 #include "Monster.h"
 #include "GameSession.h"
 #include "ObjectUtils.h"
+#include "cmath"
+#include <limits>
 
 vector<RoomRef> Rooms(9);
 
@@ -184,8 +186,11 @@ void Room::SpawnEnemy()
 
 		EnterRoom(enemy, false);
 
-		//enemy->RunAi();
-		HandleAi(enemy);
+		enemy->SetState(Protocol::AISTATE_IDLE);
+		enemy->RunAi();
+		enemy->SetTarget(enemy->posInfo);
+		
+		DoTimer(1000, &Room::HandleAi, enemy->objectInfo->object_id());
 
 		_numOfEnemy++;
 	}
@@ -197,23 +202,81 @@ void Room::SetCoordinates(int64 x, int64 y)
 	_originCoordinatesY = y;
 }
 
-void Room::HandleAi(CreatureRef creature)
+void Room::HandleAi(const uint64 objectId)
 {
-	const uint64 monsterId = creature->objectInfo->object_id();
-	if (_objects.find(monsterId) == _objects.end())
+
+	if (_objects.find(objectId) == _objects.end())
 		return;
 
+	CreatureRef creature = dynamic_pointer_cast<Creature>(_objects.find(objectId)->second);
+
+	creature->RunAi();
+
+	//패킷 생성
 	Protocol::S_AI aiPkt;
+	aiPkt.set_object_id(objectId);
+	Protocol::PosInfo target = creature->GetTarget();
 
-	aiPkt.set_object_id(monsterId);
-	aiPkt.set_state(Protocol::AISTATE_ATTACK);
-
+	switch (creature->GetState())
+	{
+	case Protocol::AISTATE_IDLE:
+		aiPkt.set_state(Protocol::AISTATE_IDLE);
+		DoTimer(1000, &Room::HandleAi, objectId);
+		break;
+	case Protocol::AISTATE_MOVE:
+		aiPkt.set_state(Protocol::AISTATE_MOVE);
+		aiPkt.set_allocated_target_location(&target);
+		DoTimer(1000, &Room::HandleAi, objectId);
+		break;
+	case Protocol::AISTATE_ATTACK:
+		aiPkt.set_state(Protocol::AISTATE_ATTACK);
+		DoTimer(1000, &Room::HandleAi, objectId);
+		break;
+	case Protocol::AISTATE_RUNAWAY:
+		aiPkt.set_state(Protocol::AISTATE_RUNAWAY);
+		DoTimer(1000, &Room::HandleAi, objectId);
+		break;
+	}
 
 	SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(aiPkt);
 
-	Broadcast(sendBuffer, 0);
+	Broadcast(sendBuffer, objectId);
 
-	DoTimer(1000, &Room::HandleAi, creature);
+	vector<Protocol::AiState> wef;
+
+
+}
+
+Protocol::PosInfo* Room::FindClosestPlayer(uint64 objectId)
+{
+	if (_objects.find(objectId) == _objects.end())
+		return nullptr;
+
+	CreatureRef creature = dynamic_pointer_cast<Creature>(_objects.find(objectId)->second);
+	Protocol::PosInfo* target = nullptr;
+
+	float least_distance = FLT_MAX;
+	float distance = 0;
+
+	for (auto iter = _objects.begin(); iter != _objects.end(); iter++)
+	{
+		distance = 0;
+		if (auto player = dynamic_pointer_cast<Player>(iter->second))
+		{
+			// 거리계산
+			distance += (creature->posInfo->x() - player->posInfo->x()) * (creature->posInfo->x() - player->posInfo->x());
+			distance += (creature->posInfo->y() - player->posInfo->y()) * (creature->posInfo->y() - player->posInfo->y());
+			distance += (creature->posInfo->z() - player->posInfo->z()) * (creature->posInfo->z() - player->posInfo->z());
+
+			if (least_distance > distance)
+			{
+				least_distance = distance;
+				target = player->posInfo;
+			}	
+		}
+	}
+
+	return target;
 }
 
 void Room::UpdateTick()
