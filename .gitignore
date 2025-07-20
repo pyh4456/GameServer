@@ -6,6 +6,7 @@ Binary/
 DummyClient/x64/
 GameServer/x64/
 ServerCore/x64/
+/Libraries/Libs/ServerCore/
 
 # Compiled Object files
 *.slo
@@ -17,3 +18,6 @@ ServerCore/x64/
 *.tlog
 *.ilk
 *.exe
+
+*.vcxproj.filters
+/Libraries/Libs/ServerCore/Debug/ServerCore.lib
