@@ -67,3 +67,8 @@ bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt)
 {
 	return true;
 }
+
+bool Handle_S_AI(PacketSessionRef& session, Protocol::S_AI& pkt)
+{
+	return false;
+}

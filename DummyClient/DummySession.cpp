@@ -6,8 +6,8 @@ void DummySession::OnConnected()
 {
 	cout << "OnConnected" << endl;
 
+	// 게임 접속
 	int64 characterType = Utils::GetRandom(1, 3);
-
 
 	Protocol::C_ENTER_GAME pkt;
 
